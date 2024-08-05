@@ -47,6 +47,16 @@ export interface IUploadClientActions {
   getLastExistedChunkIndex: (hash: string) => Promise<number>;
 }
 
+export interface IUploadClientJSON {
+  name: string;
+  size: number;
+  hash: string;
+  concurrency: number;
+  chunkSize: number;
+  poolElapse: number;
+  state: EUploadClientState;
+}
+
 export class UploadClient {
   static EState = EUploadClientState;
 
@@ -54,6 +64,7 @@ export class UploadClient {
   progress$ = new BehaviorSubject<number>(0);
   error$ = new Subject();
   poolElapse$ = new BehaviorSubject<number>(0);
+  hash?: string;
 
   #subscription = new Subscription();
   #destroyed = false;
@@ -64,7 +75,7 @@ export class UploadClient {
     public readonly file: File,
     private actions: IUploadClientActions,
     public readonly concurrency = DEFAULTS.concurrency,
-    public readonly chunkSize = DEFAULTS.chunkSize
+    public readonly chunkSize = DEFAULTS.chunkSize,
   ) {
     this.#asyncQueue = new AsyncQueue({ concurrency });
     this.#asyncQueue.pause();
@@ -87,12 +98,25 @@ export class UploadClient {
     const hash = await calculateChunksHashByWorker(chunks, (progress) => {
       this.progress$.next(progress);
     });
+    this.hash = hash;
 
     return {
       hash,
       chunks,
     };
   });
+
+  toJSON(): IUploadClientJSON {
+    return {
+      name: this.file.name,
+      size: this.file.size,
+      hash: this.hash ?? "",
+      concurrency: this.concurrency,
+      chunkSize: this.chunkSize,
+      poolElapse: this.poolElapse$.value,
+      state: this.state$.value,
+    };
+  }
 
   async #checkExists() {
     const { chunks, hash } = await this.#calcHash();
@@ -124,24 +148,24 @@ export class UploadClient {
         const exists = await this.actions.chunkExists(hash, index);
         if (!exists) {
           await this.actions.uploadChunk(
-            createFormData({ hash, chunk, index })
+            createFormData({ hash, chunk, index }),
           );
         }
       });
     });
 
     this.#subscription.add(
-      this.#asyncQueue.error$.subscribe((v) => this.#handleError(v))
+      this.#asyncQueue.error$.subscribe((v) => this.#handleError(v)),
     );
 
     this.#subscription.add(
-      this.#asyncQueue.progress$.subscribe((v) => this.progress$.next(v))
+      this.#asyncQueue.progress$.subscribe((v) => this.progress$.next(v)),
     );
 
     this.#subscription.add(
       interval(100).subscribe(() => {
         this.poolElapse$.next(this.#asyncQueue.runningTime / 100);
-      })
+      }),
     );
   }
 
@@ -183,18 +207,18 @@ export class UploadClient {
                     this.progress$.next(100);
                     this.state$.next(EUploadClientState.Merging);
                     return from(this.#merge(hash));
-                  })
+                  }),
                 );
-              })
+              }),
             );
           }),
           concatAll(),
           tap(() => this.state$.next(EUploadClientState.UploadSuccessfully)),
-          take(1)
+          take(1),
         )
         .subscribe({
           error: this.#handleError,
-        })
+        }),
     );
   }
 

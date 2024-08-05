@@ -8,16 +8,25 @@ import {
   ReloadIcon,
   TrashIcon,
 } from "@radix-ui/react-icons";
+import { log } from "@shared/log";
 import { useLocalStorageState, useMap, useMemoizedFn } from "ahooks";
 import { sentenceCase } from "change-case";
-import { get, uniqueId } from "lodash-es";
-import { useObservable } from "rcrx";
+import { get, isNumber, uniqueId } from "lodash-es";
+import { useObservable, useSubscribe } from "rcrx";
 import React, { memo, useEffect, useMemo, useRef } from "react";
 import { Observable } from "rxjs";
 import { IUploadClientActions, IWrapServerActions } from "../../shared/actions";
 import { IUploadSetting, UploadSetting } from "./setting";
 
-import { Badge, cn, Input, Progress } from "@npcs/ui";
+import {
+  Badge,
+  cn,
+  Input,
+  InputProps,
+  Progress,
+  toast,
+  Toaster,
+} from "@npcs/ui";
 import { configuration } from "@shared/configuration";
 import { useIsClient } from "@shared/next";
 import { io } from "socket.io-client";
@@ -25,7 +34,7 @@ import { unwrapActions } from "../actions";
 import { DEFAULTS } from "../defaults";
 import { ESupportedProtocol } from "../protocol";
 import { SocketClient } from "../socket";
-import { UploadClient } from "./client";
+import { IUploadClientJSON, UploadClient } from "./client";
 import { formatFileSize } from "./format-file-size";
 import { formatTimeBySeconds } from "./format-time";
 import { mp } from "./jsx";
@@ -33,12 +42,28 @@ import { Loading } from "./loading";
 
 const AUTO_UPLOAD = true;
 
-export interface IUploadProps {
+export interface IUploadClientSideProps {
   actions: IWrapServerActions<IUploadClientActions>;
+  input?: Omit<
+    InputProps & React.RefAttributes<HTMLInputElement>,
+    "type" | "value" | "change" | "onClick"
+  > & {
+    /**
+     * If define, execute the callback instead of opening the file explorer
+     */
+    onClick?: () => void;
+  };
+  maxSize?: number;
+  onComplete?: (info: IUploadClientJSON) => void;
+  initialFiles?: IUploadClientJSON[];
 }
 
-export const UploadClientSide: React.FC<IUploadProps> = ({
+export const UploadClientSide: React.FC<IUploadClientSideProps> = ({
   actions: httpActions,
+  input,
+  maxSize,
+  onComplete,
+  initialFiles,
 }) => {
   const { isClient } = useIsClient();
   const [setting, setSetting] = useLocalStorageState<IUploadSetting>(
@@ -87,6 +112,16 @@ export const UploadClientSide: React.FC<IUploadProps> = ({
 
   const onChange = useMemoizedFn((async (e) => {
     Array.from(e.target.files ?? []).forEach((file) => {
+      if (isNumber(maxSize) && file.size > maxSize) {
+        toast({
+          title: `File ${file.name} is too large. Max size is ${formatFileSize(
+            maxSize,
+          )}`,
+          variant: "destructive",
+        });
+        return;
+      }
+
       const id = uniqueId();
       const client = new UploadClient(
         file,
@@ -115,8 +150,17 @@ export const UploadClientSide: React.FC<IUploadProps> = ({
     clientMapActions.remove(id);
   });
 
+  const onClick = useMemoizedFn(((e) => {
+    if (input?.onClick) {
+      input.onClick();
+      e.preventDefault();
+    }
+  }) satisfies InputProps["onClick"]);
+
   return (
     <div className="flex flex-col gap-4 border border-solid py-4">
+      <Toaster />
+
       <div className="mb-4 px-4">
         <UploadSetting
           disabled={!isClient}
@@ -134,7 +178,14 @@ export const UploadClientSide: React.FC<IUploadProps> = ({
       </div>
 
       <div className="flex gap-4 px-4">
-        <Input multiple type="file" value={""} onChange={onChange} />
+        <Input
+          multiple
+          type="file"
+          value={""}
+          onChange={onChange}
+          {...input}
+          onClick={onClick}
+        />
       </div>
 
       <div ref={scrollContainerRef} className="h-64 overflow-auto">
@@ -145,6 +196,7 @@ export const UploadClientSide: React.FC<IUploadProps> = ({
             onRemove={() => onRemove(id)}
             {...setting}
             protocol={idToProtocolMap.get(id)}
+            onComplete={onComplete}
           />
         ))}
       </div>
@@ -159,11 +211,12 @@ interface IUploadSingleFileProps {
   client: UploadClient;
   chunkSize?: number;
   protocol?: string;
+  onComplete?: (info: IUploadClientJSON) => void;
 }
 const UploadSingleFile = memo(function UploadSingleFile(
   props: IUploadSingleFileProps,
 ) {
-  const { client, onRemove, protocol } = props;
+  const { client, onRemove, protocol, onComplete } = props;
   const file = client.file;
 
   useEffect(() => {
@@ -180,6 +233,18 @@ const UploadSingleFile = memo(function UploadSingleFile(
 
   const onRestart = useMemoizedFn(() => {
     client.restart(AUTO_UPLOAD);
+  });
+
+  useSubscribe(client.state$, (state) => {
+    if (
+      [
+        UploadClient.EState.UploadSuccessfully,
+        UploadClient.EState.FastUploaded,
+      ].includes(state)
+    ) {
+      log.log("complete");
+      onComplete?.(client.toJSON());
+    }
   });
 
   const state = useObservable(client.state$, UploadClient.EState.Default);

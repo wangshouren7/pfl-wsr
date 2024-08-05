@@ -1,10 +1,13 @@
 import React from "react";
 
-import { UploadClientSide } from "../client/ui/upload-client-side";
+import {
+  IUploadClientSideProps,
+  UploadClientSide,
+} from "../client/ui/upload-client-side";
 import { uploadActions } from "./actions";
 
-export interface IUploadProps {}
+export interface IUploadProps extends Omit<IUploadClientSideProps, "actions"> {}
 
-export const Upload: React.FC<IUploadProps> = () => {
-  return <UploadClientSide actions={uploadActions} />;
+export const Upload: React.FC<IUploadProps> = (props) => {
+  return <UploadClientSide actions={uploadActions} {...props} />;
 };

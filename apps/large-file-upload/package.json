@@ -3,7 +3,7 @@
   "version": "0.6.2",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev",
     "build": "next build",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
@@ -11,7 +11,9 @@
     "clean": "npcs clean"
   },
   "dependencies": {
+    "@clerk/nextjs": "^5.2.6",
     "@esbuild-plugins/tsconfig-paths": "^0.1.2",
+    "@npcs/env": "workspace:^",
     "@npcs/log": "workspace:^",
     "@npcs/next-config": "workspace:^",
     "@npcs/playwright-config": "workspace:^",
@@ -56,6 +58,7 @@
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
     "spark-md5": "^3.0.2",
+    "svix": "^1.28.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "type-fest": "^4.21.0",
