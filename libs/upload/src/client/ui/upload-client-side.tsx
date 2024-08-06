@@ -18,6 +18,7 @@ import { Observable } from "rxjs";
 import { IUploadClientActions, IWrapServerActions } from "../../shared/actions";
 import { IUploadSetting, UploadSetting } from "./setting";
 
+import { IUploadClientJSON } from "@client/types";
 import {
   Badge,
   cn,
@@ -34,7 +35,7 @@ import { unwrapActions } from "../actions";
 import { DEFAULTS } from "../defaults";
 import { ESupportedProtocol } from "../protocol";
 import { SocketClient } from "../socket";
-import { IUploadClientJSON, UploadClient } from "./client";
+import { UploadClient } from "./client";
 import { formatFileSize } from "./format-file-size";
 import { formatTimeBySeconds } from "./format-time";
 import { mp } from "./jsx";
