@@ -1,14 +1,14 @@
 export enum EUploadClientState {
-  Default,
-  CalculatingHash,
-  CheckingFileExists,
-  FastUploaded,
-  WaitForUpload,
-  Uploading,
-  UploadStopped,
-  Merging,
-  UploadSuccessfully,
-  Error,
+  Default = "Default",
+  CalculatingHash = "CalculatingHash",
+  CheckingFileExists = "CheckingFileExists",
+  WaitForUpload = "WaitForUpload",
+  Uploading = "Uploading",
+  UploadStopped = "UploadStopped",
+  Merging = "Merging",
+  Finishing = "Finishing",
+  UploadSuccessfully = "UploadSuccessfully",
+  Error = "Error",
 }
 
 export interface IUploadChunkData {
@@ -29,8 +29,4 @@ export interface IUploadClientJSON {
   name: string;
   size: number;
   hash: string;
-  concurrency: number;
-  chunkSize: number;
-  poolElapse: number;
-  state: EUploadClientState;
 }

@@ -1,5 +1,5 @@
 import { findWorkspaceDir } from "@pnpm/find-workspace-dir";
-import { findWorkspacePackages } from "@pnpm/workspace.find-packages";
+import { findWorkspacePackages, Project } from "@pnpm/workspace.find-packages";
 import execSh from "exec-sh";
 import inquirer from "inquirer";
 import { z } from "zod";
@@ -12,6 +12,7 @@ const options = z.object({}) satisfies IOptionsValidation;
 export class CommandDev extends Command<typeof options> {
   constructor() {
     super(name, description, options);
+    this.cmd.allowUnknownOption();
   }
 
   async action() {
@@ -19,11 +20,18 @@ export class CommandDev extends Command<typeof options> {
     if (!workspace) {
       this.throwError("Not a workspace");
     }
+
     const apps = (
       await findWorkspacePackages(workspace, {
         patterns: ["./apps/*"],
       })
     ).filter((x) => x.rootDir !== workspace);
+
+    const currentApp = apps.find((x) => x.rootDir === this.cwd);
+    if (currentApp) {
+      this.startApp(currentApp);
+      return;
+    }
 
     inquirer
       .prompt([
@@ -48,5 +56,11 @@ export class CommandDev extends Command<typeof options> {
           this.throwError(error.message);
         }
       });
+  }
+
+  startApp(app: Project) {
+    execSh(`pnpm next dev`, {
+      cwd: app.rootDir,
+    });
   }
 }

@@ -14,7 +14,8 @@
   },
   "exports": {
     "./server": "./esm/server.js",
-    "./client": "./esm/client.js"
+    "./client": "./esm/client.js",
+    "./shared": "./esm/shared.js"
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.11.0",

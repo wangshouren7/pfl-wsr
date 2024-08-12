@@ -1,18 +1,26 @@
+"use server";
+
 import { log } from "@/log";
 import { prisma } from "@/prisma/client";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
+import { env } from "@npcs/env/shared";
 
-async function getClerkId() {
+async function getClerkUser() {
   try {
-    const clerkUser = await currentUser();
-    return clerkUser?.id;
+    return await currentUser();
   } catch (error) {
     log.error(error);
+    return null;
   }
 }
 
+export async function getClerkUserId() {
+  return auth().userId;
+}
+
 export async function getCurrentUser() {
-  const clerkId = await getClerkId();
+  const clerkId = await getClerkUserId();
+  log.debug({ clerkId });
   if (!clerkId) {
     return null;
   }
@@ -22,6 +30,22 @@ export async function getCurrentUser() {
       clerkId,
     },
   });
+
+  log.debug({ user });
+
+  // Enable test users in development
+  if (env.NODE_ENV === "development" && !user) {
+    const clerkUser = await getClerkUser();
+    if (clerkUser?.emailAddresses[0]?.emailAddress.includes("+clerk_test")) {
+      const user = await prisma.user.create({
+        data: {
+          clerkId,
+        },
+      });
+      return user;
+    }
+  }
+
   return user;
 }
 

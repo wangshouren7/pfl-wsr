@@ -7,14 +7,12 @@ import { once } from "lodash-es";
 import memoize from "p-memoize";
 import {
   BehaviorSubject,
-  EMPTY,
   Subject,
   Subscription,
-  concatAll,
   concatMap,
   from,
   interval,
-  map,
+  of,
   switchMap,
   take,
   tap,
@@ -33,6 +31,7 @@ export class UploadClient {
   error$ = new Subject();
   poolElapse$ = new BehaviorSubject<number>(0);
   hash?: string;
+  finisher?: () => Promise<void>;
 
   #subscription = new Subscription();
   #destroyed = false;
@@ -79,10 +78,6 @@ export class UploadClient {
       name: this.file.name,
       size: this.file.size,
       hash: this.hash ?? "",
-      concurrency: this.concurrency,
-      chunkSize: this.chunkSize,
-      poolElapse: this.poolElapse$.value,
-      state: this.state$.value,
     };
   }
 
@@ -157,8 +152,7 @@ export class UploadClient {
           switchMap(({ chunks, exists, hash }) => {
             if (exists) {
               this.progress$.next(100);
-              this.state$.next(EUploadClientState.FastUploaded);
-              return EMPTY;
+              return of(null);
             }
 
             return from(this.#initialAsyncQueue(hash, chunks)).pipe(
@@ -170,7 +164,7 @@ export class UploadClient {
                 }
 
                 return from(this.#asyncQueue.drain()).pipe(
-                  map(() => {
+                  concatMap(() => {
                     this.#asyncQueue.pause();
                     this.progress$.next(100);
                     this.state$.next(EUploadClientState.Merging);
@@ -180,8 +174,19 @@ export class UploadClient {
               }),
             );
           }),
-          concatAll(),
-          tap(() => this.state$.next(EUploadClientState.UploadSuccessfully)),
+          concatMap(() => {
+            if (this.finisher) {
+              this.state$.next(EUploadClientState.Finishing);
+              return from(this.finisher()).pipe(
+                tap(() => {
+                  this.state$.next(EUploadClientState.UploadSuccessfully);
+                }),
+              );
+            }
+
+            this.state$.next(EUploadClientState.UploadSuccessfully);
+            return of(null);
+          }),
           take(1),
         )
         .subscribe({

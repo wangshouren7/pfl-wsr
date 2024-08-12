@@ -1,12 +1,11 @@
 "use server";
-import { getCurrentUser, getCurrentUserOrThrow } from "@/actions/user";
+import { addFile, getFiles, removeFile } from "@/actions/file";
+import { getCurrentUser } from "@/actions/user";
 import { log } from "@/log";
-import { prisma } from "@/prisma/client";
 import { auth } from "@clerk/nextjs/server";
 import {
   configuration,
   FileSystemStorage,
-  IUploadProps,
   startWebsocketServer,
   Upload,
 } from "@npcs/upload";
@@ -29,52 +28,16 @@ const requireAuth = async () => {
   redirectToSignIn();
 };
 
-const onComplete: IUploadProps["onComplete"] = async (fileJSON) => {
-  "use server";
-  log.log(fileJSON);
-
-  const existingFile = await prisma.file.findFirst({
-    where: {
-      name: fileJSON.name,
-      hash: fileJSON.hash,
-    },
-  });
-
-  const user = await getCurrentUserOrThrow();
-  if (existingFile) {
-    await prisma.user.update({
-      where: user,
-      data: {
-        files: {
-          update: {
-            where: {
-              id: existingFile.id,
-            },
-            data: fileJSON,
-          },
-        },
-      },
-    });
-  } else {
-    await prisma.file.create({
-      data: {
-        ...fileJSON,
-        users: {
-          connect: {
-            id: user.id,
-          },
-        },
-      },
-    });
-  }
-};
-
 export default async function Home() {
   const user = await getCurrentUser();
+  const files = await getFiles();
+
+  log.debug(files);
 
   return (
     <div className="w-2/3 min-w-96">
       <Upload
+        initialFiles={files}
         input={
           user
             ? undefined
@@ -83,7 +46,8 @@ export default async function Home() {
               }
         }
         maxSize={1024 * 1024 * 1024}
-        onComplete={onComplete}
+        onComplete={addFile}
+        onRemove={removeFile}
       />
     </div>
   );

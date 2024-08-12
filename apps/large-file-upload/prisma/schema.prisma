@@ -22,13 +22,9 @@ model User {
 }
 
 model File {
-  id          String @id @default(uuid())
-  hash        String
-  name        String
-  users       User[] @relation("UserFiles")
-  size        Int    @default(0)
-  concurrency Int    @default(0)
-  chunkSize   Int    @default(0)
-  poolElapse  Int    @default(0)
-  state       Int    @default(0)
+  id    String @id @default(uuid())
+  hash  String
+  name  String
+  users User[] @relation("UserFiles")
+  size  Int    @default(0)
 }

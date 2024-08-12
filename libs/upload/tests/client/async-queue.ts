@@ -3,7 +3,15 @@ import { firstValueFrom } from "rxjs";
 import { expectTime, nameOf } from "../test-utils";
 
 describe(AsyncQueue.name, () => {
-  vi.useFakeTimers();
+  beforeEach(() => {
+    // tell vitest we use mocked time
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    // restoring date after each test run
+    vi.useRealTimers();
+  });
 
   describe(nameOf<AsyncQueue>("options"), () => {
     test("should set concurrency", () => {
@@ -111,8 +119,8 @@ describe(AsyncQueue.name, () => {
           new Promise((resolve) =>
             setInterval(() => {
               resolve();
-            }, 1000)
-          )
+            }, 1000),
+          ),
       );
       vi.advanceTimersByTime(150);
 

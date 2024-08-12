@@ -22,13 +22,10 @@ function prepare() {
     processPrismaDevFlow();
   }
 
-  loadAndCheckEnv(IS_DEV);
+  loadAndCheckEnv();
 }
 
-function loadAndCheckEnv(isDev: boolean) {
-  const __filename = fileURLToPath(import.meta.url);
-  const jiti = createJiti(__filename);
-
+function loadAndCheckEnv() {
   /**
    * local env file should only exists in development environment.
    * In some other environment, such as github actions or docker, local env should extends from externals
@@ -37,7 +34,7 @@ function loadAndCheckEnv(isDev: boolean) {
     ? join(__dirname, ".env.local")
     : "";
   const envPath = join(__dirname, ".env");
-  const devEnvPath = isDev ? join(__dirname, ".env.development") : "";
+  const devEnvPath = IS_DEV ? join(__dirname, ".env.development") : "";
 
   // load from file
   dotenv.config({
@@ -45,23 +42,22 @@ function loadAndCheckEnv(isDev: boolean) {
   });
 
   // check
-  const { env: server } = jiti(
-    "@npcs/env/server",
-  ) as typeof import("@npcs/env/server");
-  const { env: client } = jiti(
-    "@npcs/env/client",
-  ) as typeof import("@npcs/env/client");
+  const __filename = fileURLToPath(import.meta.url);
+  const jiti = createJiti(__filename);
+  const loader = (side: string) => jiti(`@npcs/env/${side}`).env;
 
-  printEnv(server, "server");
-  printEnv(client, "client");
-}
+  checkEnv("shared", loader);
+  checkEnv("server", loader);
+  checkEnv("client", loader);
 
-function printEnv(env: Record<string, string | undefined>, side: string) {
-  if (IS_DEV) {
-    log.info(
-      `The environment variables in ${side} side are as follows (only logs in development):`,
-    );
-    log.table(Object.entries(env).map(([name, value]) => ({ name, value })));
+  function checkEnv(side: string, loader: (id: string) => object) {
+    const env = loader(side);
+    if (IS_DEV) {
+      log.info(
+        `The environment variables in \`${side}\` are as follows (only logs in development):`,
+      );
+      log.table(Object.entries(env).map(([name, value]) => ({ name, value })));
+    }
   }
 }
 
@@ -75,5 +71,8 @@ function processPrismaDevFlow() {
   const hasSeed = !!APP_PACKAGE_JSON?.prisma?.seed;
   exec(
     `pnpm prisma migrate dev ${hasSeed ? `&& pnpm prisma db seed` : ""} && pnpm prisma studio -b false`,
+    {
+      stdio: "inherit",
+    },
   );
 }

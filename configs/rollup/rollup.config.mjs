@@ -34,6 +34,7 @@ export default {
         rootDir: "./src",
         incremental: false,
         jsx: "react-jsx",
+        sourceMap: true,
       },
       exclude: ["**/*.stories.*", "**/*.test.*"],
     }),

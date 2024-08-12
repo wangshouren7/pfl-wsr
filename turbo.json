@@ -41,7 +41,7 @@
     "dev": {
       "persistent": true,
       "cache": false,
-      "dependsOn": ["^compile", "prisma-generate"]
+      "dependsOn": ["^compile"]
     },
     "storybook": {
       "persistent": true,

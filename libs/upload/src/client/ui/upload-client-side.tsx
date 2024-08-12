@@ -1,33 +1,13 @@
 "use client";
 
-import {
-  CheckIcon,
-  Cross2Icon,
-  PauseIcon,
-  PlayIcon,
-  ReloadIcon,
-  TrashIcon,
-} from "@radix-ui/react-icons";
-import { log } from "@shared/log";
-import { useLocalStorageState, useMap, useMemoizedFn } from "ahooks";
-import { sentenceCase } from "change-case";
+import { useLocalStorageState, useMap, useMemoizedFn, useMount } from "ahooks";
 import { get, isNumber, uniqueId } from "lodash-es";
-import { useObservable, useSubscribe } from "rcrx";
 import React, { memo, useEffect, useMemo, useRef } from "react";
-import { Observable } from "rxjs";
 import { IUploadClientActions, IWrapServerActions } from "../../shared/actions";
 import { IUploadSetting, UploadSetting } from "./setting";
 
-import { IUploadClientJSON } from "@client/types";
-import {
-  Badge,
-  cn,
-  Input,
-  InputProps,
-  Progress,
-  toast,
-  Toaster,
-} from "@npcs/ui";
+import { EUploadClientState, IUploadClientJSON } from "@client/types";
+import { Input, InputProps, toast, Toaster } from "@npcs/ui";
 import { configuration } from "@shared/configuration";
 import { useIsClient } from "@shared/next";
 import { io } from "socket.io-client";
@@ -36,10 +16,9 @@ import { DEFAULTS } from "../defaults";
 import { ESupportedProtocol } from "../protocol";
 import { SocketClient } from "../socket";
 import { UploadClient } from "./client";
+import { File } from "./file";
 import { formatFileSize } from "./format-file-size";
-import { formatTimeBySeconds } from "./format-time";
 import { mp } from "./jsx";
-import { Loading } from "./loading";
 
 const AUTO_UPLOAD = true;
 
@@ -56,6 +35,7 @@ export interface IUploadClientSideProps {
   };
   maxSize?: number;
   onComplete?: (info: IUploadClientJSON) => void;
+  onRemove?: (info: IUploadClientJSON) => void;
   initialFiles?: IUploadClientJSON[];
 }
 
@@ -65,6 +45,7 @@ export const UploadClientSide: React.FC<IUploadClientSideProps> = ({
   maxSize,
   onComplete,
   initialFiles,
+  onRemove: _onRemove,
 }) => {
   const { isClient } = useIsClient();
   const [setting, setSetting] = useLocalStorageState<IUploadSetting>(
@@ -77,11 +58,21 @@ export const UploadClientSide: React.FC<IUploadClientSideProps> = ({
       },
     },
   );
-  const [clientMap, clientMapActions] = useMap<string, UploadClient>();
+  const [clientMap, clientMapActions] = useMap<
+    string,
+    UploadClient | IUploadClientJSON
+  >();
   const [idToProtocolMap, idToProtocolMapActions] = useMap<
     string,
     ESupportedProtocol
   >();
+
+  useMount(() => {
+    initialFiles?.forEach((file) => {
+      const id = get(file, "id") || uniqueId();
+      clientMapActions.set(String(id), file);
+    });
+  });
 
   const socketClient = useMemo(
     () =>
@@ -130,6 +121,7 @@ export const UploadClientSide: React.FC<IUploadClientSideProps> = ({
         setting?.concurrency,
         setting?.chunkSize,
       );
+      client.finisher = async () => onComplete?.(client.toJSON());
       idToProtocolMap.set(id, protocol);
       clientMap.set(id, client);
     });
@@ -146,9 +138,16 @@ export const UploadClientSide: React.FC<IUploadClientSideProps> = ({
     }
   }) satisfies React.ComponentProps<"input">["onChange"]);
 
-  const onRemove = useMemoizedFn((id: string) => {
-    clientMap.get(id)?.destroy();
-    clientMapActions.remove(id);
+  const onRemove = useMemoizedFn(async (id: string) => {
+    const file = clientMap.get(id);
+    if (file instanceof UploadClient) {
+      await _onRemove?.(file.toJSON());
+      clientMapActions.remove(id);
+      file.destroy();
+    } else if (file) {
+      _onRemove?.(file);
+      clientMapActions.remove(id);
+    }
   });
 
   const onClick = useMemoizedFn(((e) => {
@@ -190,16 +189,33 @@ export const UploadClientSide: React.FC<IUploadClientSideProps> = ({
       </div>
 
       <div ref={scrollContainerRef} className="h-64 overflow-auto">
-        {Array.from(clientMap.keys()).map((id) => (
-          <UploadSingleFile
-            key={id}
-            client={clientMap.get(id)!}
-            onRemove={() => onRemove(id)}
-            {...setting}
-            protocol={idToProtocolMap.get(id)}
-            onComplete={onComplete}
-          />
-        ))}
+        {Array.from(clientMap.keys()).map((id) => {
+          const client = clientMap.get(id);
+
+          if (client instanceof UploadClient) {
+            return (
+              <UploadSingleFile
+                key={id}
+                client={client}
+                onRemove={() => onRemove(id)}
+                {...setting}
+                protocol={idToProtocolMap.get(id)}
+              />
+            );
+          }
+
+          if (client) {
+            return (
+              <File
+                key={id}
+                state={EUploadClientState.UploadSuccessfully}
+                {...client}
+                progress={100}
+                onRemove={() => onRemove(id)}
+              />
+            );
+          }
+        })}
       </div>
     </div>
   );
@@ -212,12 +228,11 @@ interface IUploadSingleFileProps {
   client: UploadClient;
   chunkSize?: number;
   protocol?: string;
-  onComplete?: (info: IUploadClientJSON) => void;
 }
 const UploadSingleFile = memo(function UploadSingleFile(
   props: IUploadSingleFileProps,
 ) {
-  const { client, onRemove, protocol, onComplete } = props;
+  const { client, onRemove, protocol } = props;
   const file = client.file;
 
   useEffect(() => {
@@ -236,139 +251,20 @@ const UploadSingleFile = memo(function UploadSingleFile(
     client.restart(AUTO_UPLOAD);
   });
 
-  useSubscribe(client.state$, (state) => {
-    if (
-      [
-        UploadClient.EState.UploadSuccessfully,
-        UploadClient.EState.FastUploaded,
-      ].includes(state)
-    ) {
-      log.log("complete");
-      onComplete?.(client.toJSON());
-    }
-  });
-
-  const state = useObservable(client.state$, UploadClient.EState.Default);
-  const error = useObservable(client.error$, null);
-
-  const stateString =
-    state === UploadClient.EState.Error && error
-      ? get(error, "message")
-      : state === UploadClient.EState.Default
-        ? undefined
-        : sentenceCase(UploadClient.EState[state]);
-
   return mp(
     props,
-    <div className="flex  flex-col gap-2 px-4 py-2 hover:bg-gray-100">
-      <div className="flex items-center justify-between">
-        <div className="flex-1 truncate" title={file.name}>
-          {file.name}
-        </div>
-
-        <Badge className="mr-2 w-[90px] justify-center">{protocol}</Badge>
-      </div>
-
-      <div
-        className="flex gap-2 overflow-hidden text-xs text-gray-500"
-        title={stateString}
-      >
-        <UploadStateIcon state$={client.state$} />
-        <div className="flex-1 truncate">{stateString}</div>
-      </div>
-
-      <div className="flex items-center gap-2">
-        <RxProgress value$={client.progress$} />
-        <div className="flex w-12 items-center justify-end">
-          <UploadControl
-            state$={client.state$}
-            onPlay={onPlay}
-            onRestart={onRestart}
-            onStop={onStop}
-          />
-          <TrashIcon className="ml-2 cursor-pointer" onClick={onRemove} />
-        </div>
-      </div>
-
-      <div className="flex gap-2 text-xs text-gray-400">
-        <div> Concurrency {client.concurrency} </div>
-        <div>, Chunk size {formatFileSize(client.chunkSize)} </div>
-        <UploadingElapsed elapse$={client.poolElapse$} />
-      </div>
-    </div>,
+    <File
+      chunkSize={client.chunkSize}
+      concurrency={client.concurrency}
+      elapse={client.poolElapse$}
+      name={file.name}
+      progress={client.progress$}
+      protocol={protocol}
+      state={client.state$}
+      onPlay={onPlay}
+      onRemove={onRemove}
+      onRestart={onRestart}
+      onStop={onStop}
+    />,
   );
 });
-
-const UploadingElapsed: React.FC<{
-  elapse$: UploadClient["poolElapse$"];
-}> = ({ elapse$ }) => {
-  const elapsed = useObservable(elapse$, 0);
-  return (
-    <div className={cn(elapsed === 0 && "hidden")}>
-      , Uploading time {formatTimeBySeconds(elapsed / 10)}
-    </div>
-  );
-};
-
-const UploadStateIcon: React.FC<{
-  state$: UploadClient["state$"];
-}> = ({ state$ }) => {
-  const state = useObservable(state$, UploadClient.EState.Default);
-
-  switch (state) {
-    case UploadClient.EState.Uploading:
-    case UploadClient.EState.CheckingFileExists:
-    case UploadClient.EState.CalculatingHash:
-    case UploadClient.EState.Merging:
-      return <Loading />;
-
-    case UploadClient.EState.UploadSuccessfully:
-    case UploadClient.EState.FastUploaded:
-      return <CheckIcon color="green" />;
-
-    case UploadClient.EState.Error:
-      return <Cross2Icon color="red" />;
-
-    default:
-      return null;
-  }
-};
-
-interface IUploadControlProps {
-  onPlay?: () => void;
-  onStop?: () => void;
-  onRestart?: () => void;
-  state$: UploadClient["state$"];
-}
-const UploadControl: React.FC<IUploadControlProps> = ({
-  onPlay,
-  onStop,
-  onRestart,
-  state$,
-}) => {
-  const state = useObservable(state$, UploadClient.EState.Default);
-
-  switch (state) {
-    case UploadClient.EState.WaitForUpload:
-    case UploadClient.EState.UploadStopped:
-      return <PlayIcon className="cursor-pointer" onClick={onPlay} />;
-
-    case UploadClient.EState.Uploading:
-      return <PauseIcon className="cursor-pointer" onClick={onStop} />;
-
-    case UploadClient.EState.Error:
-      return <ReloadIcon className="cursor-pointer" onClick={onRestart} />;
-
-    default:
-      return null;
-  }
-};
-
-interface IRxProgressProps {
-  value$: Observable<number>;
-}
-const RxProgress: React.FC<IRxProgressProps> = ({ value$ }) => {
-  const value = useObservable(value$, 0);
-
-  return <Progress className="my-2 h-1" value={value} />;
-};

@@ -1,10 +1,7 @@
-import {
-  EUploadClientState,
-  IUploadClientActions,
-  UploadClient,
-} from "@client/ui/client";
+import { EUploadClientState, IUploadClientActions } from "@client/types";
+import { UploadClient } from "@client/ui/client";
 import { filter, firstValueFrom } from "rxjs";
-import { nameOf } from "../../test-utils";
+import { expectTime, nameOf } from "../../test-utils";
 
 vi.mock("@client/workers/calculate-hash", () => {
   return {
@@ -70,6 +67,16 @@ function createClientTestUtils(
 }
 
 describe(UploadClient.name, () => {
+  beforeEach(() => {
+    // tell vitest we use mocked time
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    // restoring date after each test run
+    vi.useRealTimers();
+  });
+
   test("normal upload", async () => {
     const { client, expectStateSequence, waitState } = createClientTestUtils();
 
@@ -112,36 +119,13 @@ describe(UploadClient.name, () => {
     });
 
     client.start();
-    await waitState(UploadClient.EState.FastUploaded);
+    await waitState(UploadClient.EState.UploadSuccessfully);
     expectStateSequence([
       UploadClient.EState.Default,
       UploadClient.EState.CalculatingHash,
       UploadClient.EState.CheckingFileExists,
-      UploadClient.EState.FastUploaded,
+      UploadClient.EState.UploadSuccessfully,
     ]);
-  });
-
-  describe("error", () => {
-    const testActionError = (actionName: keyof IUploadClientActions) => {
-      test(`should catch error throw from ${actionName}() action`, async () => {
-        const expectedError = new Error("error");
-        const { client, waitState, expectError } = createClientTestUtils({
-          [actionName]: async () => {
-            throw expectedError;
-          },
-        });
-
-        client.start(true);
-        await waitState(UploadClient.EState.Error);
-        expectError(expectedError);
-      });
-    };
-
-    testActionError("chunkExists");
-    testActionError("fileExists");
-    testActionError("getLastExistedChunkIndex");
-    testActionError("merge");
-    testActionError("uploadChunk");
   });
 
   describe(nameOf<UploadClient>("progress$"), () => {
@@ -178,7 +162,7 @@ describe(UploadClient.name, () => {
       await waitState(UploadClient.EState.CheckingFileExists);
       expectProgress(0);
 
-      await waitState(UploadClient.EState.FastUploaded);
+      await waitState(UploadClient.EState.UploadSuccessfully);
       expectProgress(100);
     });
   });
@@ -213,6 +197,7 @@ describe(UploadClient.name, () => {
 
     client.start(true);
     await waitState(UploadClient.EState.Merging);
+    vi.advanceTimersByTime(100);
     await waitState(UploadClient.EState.UploadSuccessfully);
   });
 
@@ -271,6 +256,91 @@ describe(UploadClient.name, () => {
       poolElapse: expect.any(Number),
       size: expect.any(Number),
       state: EUploadClientState.UploadSuccessfully,
+    });
+  });
+
+  describe(nameOf<UploadClient>("finisher"), () => {
+    const doTest = async (
+      client: UploadClient,
+      waitState: (targetState: EUploadClientState) => Promise<void>,
+    ) => {
+      client.finisher = () => new Promise((rs) => setTimeout(rs, 1000));
+
+      const now = Date.now();
+
+      client.start(true);
+      await waitState(EUploadClientState.Finishing);
+      await vi.runOnlyPendingTimersAsync();
+      await waitState(EUploadClientState.UploadSuccessfully);
+
+      const elapsed = Date.now() - now;
+
+      expectTime(elapsed, 1000);
+    };
+
+    test("normal upload", async () => {
+      const { client, waitState, expectStateSequence } =
+        createClientTestUtils();
+
+      await doTest(client, waitState);
+
+      expectStateSequence([
+        EUploadClientState.Default,
+        EUploadClientState.CalculatingHash,
+        EUploadClientState.CheckingFileExists,
+        EUploadClientState.Uploading,
+        EUploadClientState.Merging,
+        EUploadClientState.Finishing,
+        EUploadClientState.UploadSuccessfully,
+      ]);
+    });
+
+    test("fast upload", async () => {
+      const { client, waitState, expectStateSequence } = createClientTestUtils({
+        fileExists: async () => true,
+      });
+      await doTest(client, waitState);
+
+      expectStateSequence([
+        EUploadClientState.Default,
+        EUploadClientState.CalculatingHash,
+        EUploadClientState.CheckingFileExists,
+        EUploadClientState.Finishing,
+        EUploadClientState.UploadSuccessfully,
+      ]);
+    });
+  });
+
+  describe("errors", () => {
+    const testActionError = (actionName: keyof IUploadClientActions) => {
+      test(`should catch error throw from ${actionName}()`, async () => {
+        const expectedError = new Error("error");
+        const { client, waitState, expectError } = createClientTestUtils({
+          [actionName]: async () => {
+            throw expectedError;
+          },
+        });
+
+        client.start(true);
+        await waitState(UploadClient.EState.Error);
+        expectError(expectedError);
+      });
+    };
+
+    testActionError("chunkExists");
+    testActionError("fileExists");
+    testActionError("getLastExistedChunkIndex");
+    testActionError("merge");
+    testActionError("uploadChunk");
+
+    test("should catch errors thrown by finisher()", async () => {
+      const expectedError = new Error("error");
+      const { client, waitState, expectError } = createClientTestUtils();
+      client.finisher = () => Promise.reject(expectedError);
+
+      client.start(true);
+      await waitState(UploadClient.EState.Error);
+      expectError(expectedError);
     });
   });
 });
