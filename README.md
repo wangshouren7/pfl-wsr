@@ -1,14 +1,4 @@
-# npcs
-
-Build and deploy Next.js practical cases.
-
-## Apps
-
-| Name              | Description                       | Staging website                              | Production website                   |
-| ----------------- | --------------------------------- | -------------------------------------------- | ------------------------------------ |
-| Notes             | A Notes application               | https://notes.staging.npcs.store             | https://notes.npcs.store             |
-| Stackoverflow     | Stackoverflow clone               | https://stackoverflow.staging.npcs.store     | https://stackoverflow.npcs.store     |
-| large-file-upload | Large file upload, chunks enabled | https://large-file-upload.staging.npcs.store | https://large-file-upload.npcs.store |
+# Wangshouren's portfolio
 
 ## Develop application
 
@@ -53,12 +43,6 @@ pnpm -w dev
 pnpm turbo compile:watch
 ```
 
-## Deployment
-
-- For production deployment: See [Deploy production](./deploy/production/README.md)
-
-- For staging deployment: See [Deploy staging](./deploy/staging/README.md)
-
 ## Todo list
 
 | Task                                                       | Complete | Developing |
@@ -69,7 +53,7 @@ pnpm turbo compile:watch
 | Development flow                                           | 1        |            |
 | Webhook                                                    |          |            |
 | Fix styles for `stackoverflow`                             | 1        |            |
-| Dep check                                                  |          |            |
+| Dep check                                                  | 1         |            |
 | Git commit message lint                                    | 1        |            |
 | The flow of publish libraries                              | 1        |            |
 | Research turbo generators                                  |          |            |
