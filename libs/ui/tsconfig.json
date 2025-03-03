@@ -2,6 +2,9 @@
   "extends": "@npcs/typescript-config",
   "compilerOptions": {
     "types": ["vitest/globals"],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
     "paths": {
       "@/*": ["./src/*"]
     }

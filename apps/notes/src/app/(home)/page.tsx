@@ -11,11 +11,8 @@ import { IPageProps } from "@npcs/ui";
 import Link from "next/link";
 import React from "react";
 
-export const dynamic = "force-dynamic";
-
 const Page: React.FC<IPageProps> = async (props) => {
   const notes = await prisma.note.findMany();
-
   return (
     <div className="flex size-full flex-col">
       <HeaderLayout

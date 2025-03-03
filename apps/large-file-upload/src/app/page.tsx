@@ -1,4 +1,3 @@
-"use server";
 import { addFile, getFiles, removeFile } from "@/actions/file";
 import { getCurrentUser } from "@/actions/user";
 import { log } from "@/log";
@@ -24,7 +23,7 @@ if (process.env.NEXT_PHASE !== "phase-production-build") {
 
 const requireAuth = async () => {
   "use server";
-  const { redirectToSignIn } = auth();
+  const { redirectToSignIn } = await auth();
   redirectToSignIn();
 };
 

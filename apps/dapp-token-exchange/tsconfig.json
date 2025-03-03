@@ -1,0 +1,17 @@
+{
+  "extends": "@npcs/next-config/tsconfig.json",
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "types": ["vitest/globals"],
+    "lib": ["dom", "dom.iterable", "esnext"]
+  },
+  "include": ["./**/*", "./.storybook/**/*", ".next/types/**/*.ts"],
+  "exclude": ["./node_modules"]
+}

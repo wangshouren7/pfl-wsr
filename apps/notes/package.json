@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "clean": "npcs clean",
-    "dev": "next dev --turbo",
+    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "storybook": "storybook dev -p 6006",
@@ -20,7 +20,7 @@
     "prisma-generate": "prisma generate"
   },
   "dependencies": {
-    "@clerk/nextjs": "^5.3.0",
+    "@clerk/nextjs": "^6.12.0",
     "@clerk/themes": "^2.1.12",
     "@faker-js/faker": "^8.4.1",
     "@npcs/log": "workspace:^",
@@ -33,10 +33,10 @@
     "ahooks": "^3.8.0",
     "class-variance-authority": "^0.7.0",
     "lodash-es": "^4.17.21",
-    "next": "14.2.4",
+    "next": "15.1.7",
     "prisma": "^5.16.2",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
@@ -57,8 +57,8 @@
     "@testing-library/react": "^16.0.0",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "*",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
+    "@types/react": "19.0.8",
+    "@types/react-dom": "19.0.3",
     "dotenv": "^16.4.5",
     "dotenv-cli": "^7.4.2",
     "eslint": "^8.57.0",
@@ -66,7 +66,7 @@
     "rimraf": "^6.0.1",
     "storybook": "8.2.4",
     "tailwindcss": "^3.4.5",
-    "typescript": "5.5.3",
+    "typescript": "5.8.2",
     "vitest": "^2.0.4"
   }
 }

@@ -4,10 +4,12 @@ import { IPageProps, NoResults } from "@/shared";
 import Link from "next/link";
 import React from "react";
 
-const TagsDetailPage: React.FC<IPageProps<{ id: string }>> = async ({
-  params: { id },
-  searchParams,
-}) => {
+const TagsDetailPage: React.FC<IPageProps<{ id: string }>> = async (props) => {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
+
+  const { id } = params;
+
   const [tag, { items: questions, total }] = await Promise.all([
     prisma.tag.findUniqueOrThrow({
       where: {

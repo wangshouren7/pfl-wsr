@@ -13,7 +13,7 @@ export const QuestionTitle: React.FC<IQuestionTitleProps> = (props) => {
     question: { title, id },
   } = props;
 
-  let node: React.ReactElement = <></>;
+  let node: React.ReactElement<any> = <></>;
   if (level === 2) {
     node = (
       <h2 className="h2-semibold text-dark200_light900 mt-3.5 w-full text-left">

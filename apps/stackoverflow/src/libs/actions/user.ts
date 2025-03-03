@@ -31,7 +31,7 @@ export const getCurrentOrRedirectSignIn = async () => {
       title: "Not signed in",
       description: "You need to be signed in to vote ⚠️",
     });
-    auth().redirectToSignIn();
+    (await auth()).redirectToSignIn();
   }
 
   return user!;

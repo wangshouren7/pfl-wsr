@@ -19,7 +19,7 @@ if (!process.env.__PREPARED__) {
 
 function prepare() {
   if (IS_DEV) {
-    processPrismaDevFlow();
+    processPrismaDev();
   }
 
   loadAndCheckEnv();
@@ -61,7 +61,12 @@ function loadAndCheckEnv() {
   }
 }
 
-function processPrismaDevFlow() {
+function processPrismaDev() {
+  const prismaEnabled = existsSync("prisma");
+  if (!prismaEnabled) {
+    return;
+  }
+
   const APP_PACKAGE_JSON = JSON.parse(
     readFileSync(resolve("package.json"), "utf-8"),
   );

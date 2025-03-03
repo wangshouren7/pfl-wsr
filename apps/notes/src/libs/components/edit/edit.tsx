@@ -61,7 +61,6 @@ export const NoteEdit: React.FC<INoteEditProps> = (props) => {
 
   const isEdit = !!note;
   const isAdd = !note;
-
   return (
     <Form {...form}>
       <form
@@ -96,7 +95,7 @@ export const NoteEdit: React.FC<INoteEditProps> = (props) => {
               )}
               {isAdd && (
                 <SaveButtonForAdd
-                  disabled={!form.formState.isValid}
+                  // disabled={!form.formState.isValid}
                   type="submit"
                 />
               )}
@@ -104,7 +103,7 @@ export const NoteEdit: React.FC<INoteEditProps> = (props) => {
           }
         />
 
-        <FormField
+        {/* <FormField
           key={"title"}
           control={form.control}
           name={"title"}
@@ -117,7 +116,7 @@ export const NoteEdit: React.FC<INoteEditProps> = (props) => {
               </FormItem>
             );
           }}
-        />
+        /> */}
 
         <FormField
           key={"content"}

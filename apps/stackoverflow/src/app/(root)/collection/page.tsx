@@ -2,9 +2,9 @@ import { actions } from "@/actions";
 import { prisma } from "@/prisma";
 import { MODEL_NAME } from "@/prisma/model-config";
 import { QuestionList } from "@/question";
-import { IPageProps, NoResults } from "@/shared";
+import { IPageProps, migratePage, NoResults } from "@/shared";
 
-export default async function CollectionPage(
+export default migratePage(async function CollectionPage(
   props: IPageProps<{}, { q: string }>,
 ) {
   const { searchParams } = props;
@@ -50,4 +50,4 @@ export default async function CollectionPage(
       total={total}
     />
   );
-}
+});

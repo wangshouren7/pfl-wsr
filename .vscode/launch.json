@@ -2,7 +2,30 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Next.js: debug large-file-upload",
+      "name": "Next.js: debug Stackoverflow",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/apps/stackoverflow/node_modules/.bin/next",
+      "runtimeArgs": ["--inspect"],
+      "cwd": "${workspaceFolder}/apps/stackoverflow",
+      "skipFiles": ["<node_internals>/**"],
+      "serverReadyAction": {
+        "action": "debugWithEdge",
+        "killOnServerStop": true,
+        "pattern": "- Local:.+(https?://.+)",
+        "uriFormat": "%s",
+        "webRoot": "${workspaceFolder}/apps/stackoverflow"
+      }
+    },
+    {
+      "name": "Launch Stackoverflow",
+      "request": "launch",
+      "type": "chrome",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/apps/stackoverflow"
+    },
+    {
+      "name": "Next.js: debug Stackoverflow",
       "type": "node-terminal",
       "request": "launch",
       "command": "npm run dev",
@@ -11,7 +34,7 @@
         "uriFormat": "%s",
         "action": "debugWithChrome"
       },
-      "cwd": "${workspaceFolder}/apps/large-file-upload"
+      "cwd": "${workspaceFolder}"
     }
   ]
 }

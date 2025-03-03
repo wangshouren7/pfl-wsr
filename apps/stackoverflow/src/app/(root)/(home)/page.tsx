@@ -3,9 +3,9 @@ import Link from "next/link";
 import { prisma } from "@/prisma";
 import { MODEL_NAME } from "@/prisma/model-config";
 import { QuestionList } from "@/question";
-import { Button, IPageProps, NoResults } from "@/shared";
+import { Button, IPageProps, migratePage, NoResults } from "@/shared";
 
-export default async function Home(props: IPageProps) {
+export default migratePage(async function Home(props: IPageProps) {
   const { searchParams } = props;
 
   const { items: questions, total } = await prisma.question.search({
@@ -50,4 +50,4 @@ export default async function Home(props: IPageProps) {
       total={total}
     />
   );
-}
+});

@@ -13,7 +13,7 @@ function createTheme<TValue extends string>(options: IOptions<TValue>) {
 
   const SyncElementClass: ISyncElementClass = ({ getContainer }) => {
     const { value } = useTheme();
-    const lastValueRef = useRef<TValue>();
+    const lastValueRef = useRef<TValue | null>(null);
 
     useEffect(() => {
       const container = getContainer?.() ?? document.documentElement;
