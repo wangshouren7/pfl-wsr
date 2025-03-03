@@ -6,3 +6,4 @@ export * from "./object";
 export * from "./render";
 export * from "./sleep";
 export * from "./url";
+export * from "./migrations";

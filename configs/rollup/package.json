@@ -7,16 +7,11 @@
   },
   "dependencies": {
     "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-swc": "^0.3.1",
-    "@rollup/plugin-typescript": "^11.1.6",
-    "@swc/core": "^1.7.0",
+    "@rollup/plugin-typescript": "^12.1.2",
     "fast-glob": "^3.3.2",
-    "rollup-plugin-delete": "^2.0.0",
-    "rollup-plugin-dts": "^6.1.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-preserve-directives": "^0.4.0",
-    "rollup-plugin-swc3": "^0.11.2",
     "rollup-plugin-typescript-paths": "^1.5.0"
   },
   "devDependencies": {

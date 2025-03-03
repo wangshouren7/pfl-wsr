@@ -4,3 +4,4 @@ packages:
   - "./libs/*"
   - "./dbs/*"
   - "./tools/*"
+  - "./contracts/*"

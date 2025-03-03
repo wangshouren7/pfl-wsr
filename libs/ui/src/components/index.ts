@@ -21,3 +21,6 @@ export * from "./toaster";
 export * from "./toggle";
 export * from "./toggle-group";
 export * from "./use-toast";
+export * from "./table";
+export * from "./tooltip";
+export * from "./resizable";

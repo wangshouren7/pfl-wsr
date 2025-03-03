@@ -51,9 +51,12 @@ const sharedNextConfig = {
     });
   },
   output: "standalone",
+  outputFileTracingIncludes: {
+    "/": ["./prisma/**/*", "./node_modules/.prisma/**/*"],
+  },
   experimental: {
-    outputFileTracingIncludes: {
-      "/": ["./prisma/**/*", "./node_modules/.prisma/**/*"],
+    serverActions: {
+      bodySizeLimit: "10mb",
     },
     turbo: {
       rules: {

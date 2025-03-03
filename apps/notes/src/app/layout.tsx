@@ -14,13 +14,12 @@ export const metadata: Metadata = {
   description: "A Notes application code by next.js-practical-cases",
 };
 
-export const dynamic = "force-dynamic";
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  createUserIfNeeded();
+  await createUserIfNeeded();
   return (
     <ClerkProvider
       appearance={{

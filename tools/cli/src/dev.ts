@@ -4,6 +4,7 @@ import execSh from "exec-sh";
 import inquirer from "inquirer";
 import { z } from "zod";
 import { Command, IOptionsValidation } from "./command";
+import * as dc from "docker-compose";
 
 const name = "dev";
 const description = "Start develop app";
@@ -26,6 +27,13 @@ export class CommandDev extends Command<typeof options> {
         patterns: ["./apps/*"],
       })
     ).filter((x) => x.rootDir !== workspace);
+    dc.ps;
+    await dc.version({ cwd: workspace, log: true });
+    await dc.upAll({
+      cwd: workspace,
+      log: true,
+      config: "db.docker-compose.yml",
+    });
 
     const currentApp = apps.find((x) => x.rootDir === this.cwd);
     if (currentApp) {

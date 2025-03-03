@@ -15,7 +15,7 @@ async function getClerkUser() {
 }
 
 export async function getClerkUserId() {
-  return auth().userId;
+  return (await auth()).userId;
 }
 
 export async function getCurrentUser() {
@@ -25,11 +25,18 @@ export async function getCurrentUser() {
     return null;
   }
 
-  const user = await prisma.user.findUnique({
+  let user = await prisma.user.findUnique({
     where: {
       clerkId,
     },
   });
+  if (!user) {
+    user = await prisma.user.create({
+      data: {
+        clerkId,
+      },
+    });
+  }
 
   log.debug({ user });
 

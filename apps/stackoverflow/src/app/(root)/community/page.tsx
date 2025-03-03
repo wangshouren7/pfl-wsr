@@ -1,10 +1,10 @@
 import { prisma } from "@/prisma";
 import { MODEL_NAME } from "@/prisma/model-config";
-import { IPageProps, List, NoResults } from "@/shared";
+import { IPageProps, List, migratePage, NoResults } from "@/shared";
 import { UserCard } from "@/user";
 import React from "react";
 
-const CommunityPage: React.FC<IPageProps<{}>> = async (props) => {
+const CommunityPage: React.FC<IPageProps<{}>> = migratePage(async (props) => {
   const { searchParams } = props;
 
   const { items: users, total } = await prisma.user.search({
@@ -38,6 +38,6 @@ const CommunityPage: React.FC<IPageProps<{}>> = async (props) => {
       total={total}
     />
   );
-};
+});
 
 export default CommunityPage;

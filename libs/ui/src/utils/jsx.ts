@@ -18,6 +18,10 @@ export function mp(props: any, jsx: React.ReactElement) {
     return jsx;
   }
 
+  if (React.Fragment === jsx.type) {
+    return jsx;
+  }
+
   const originalProps = jsx.props as any;
   return React.cloneElement(jsx, {
     ...originalProps,
