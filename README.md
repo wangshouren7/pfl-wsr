@@ -1,5 +1,9 @@
 # Portfolio
 
+This repo is developing...
+
+Checkout to dev branch to see the latest progress.
+
 ## Develop application
 
 - Configure your environment variables in `configs/next/.env.local`, you can see the details in [configs/next/.env.local.example](./configs/next/.env.local.example)
@@ -53,7 +57,7 @@ pnpm turbo compile:watch
 | Development flow                                           | 1        |            |
 | Webhook                                                    |          |            |
 | Fix styles for `stackoverflow`                             | 1        |            |
-| Dep check                                                  | 1         |            |
+| Dep check                                                  | 1        |            |
 | Git commit message lint                                    | 1        |            |
 | The flow of publish libraries                              | 1        |            |
 | Research turbo generators                                  |          |            |
@@ -92,4 +96,3 @@ This project is licensed under the MIT License.
 - [Next-js-Boilerplate](https://github.com/ixartz/Next-js-Boilerplate/tree/main)
 - [create-t3-app](https://github.com/t3-oss/create-t3-app/blob/main/.github/workflows/ci.yml)
 - [nextjs-monorepo-example](https://github.com/belgattitude/nextjs-monorepo-example)
-
