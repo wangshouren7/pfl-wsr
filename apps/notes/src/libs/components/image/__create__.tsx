@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 
-import { cn, mp } from "@npcs/ui";
+import { cn, mp } from "@pfl-wsr/ui";
 import Image, { ImageProps } from "next/image";
 import React from "react";
 
@@ -14,7 +14,7 @@ export const createImageComponent = (displayName: string, src: string) => {
         {...props}
         className={cn(props.onClick && "cursor-pointer", "select-none")}
         src={src}
-      />,
+      />
     );
   };
 

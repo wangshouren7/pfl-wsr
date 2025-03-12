@@ -1,4 +1,4 @@
-# @npcs/notes
+# @pfl-wsr/notes
 
 ## Sources
 

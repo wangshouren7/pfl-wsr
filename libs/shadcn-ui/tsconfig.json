@@ -1,0 +1,17 @@
+{
+  "extends": "@pfl-wsr/configs/tsconfig",
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "outDir": "dist",
+    "rootDir": "src",
+    "noEmit": false,
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "incremental": false,
+    "removeComments": false
+  },
+  "include": ["src"]
+}

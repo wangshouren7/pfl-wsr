@@ -1,4 +1,4 @@
-import { mp } from "@npcs/ui";
+import { mp } from "@pfl-wsr/ui";
 import React from "react";
 
 export interface IFloatButtonProps extends React.ComponentProps<"div"> {
@@ -10,6 +10,6 @@ export const ButtonFixed: React.FC<IFloatButtonProps> = (props) => {
     props,
     <div className="bg-primary shadow-3xl inline-flex size-[70px] cursor-pointer items-center justify-center rounded-full duration-75 active:scale-95">
       {props.children}
-    </div>,
+    </div>
   );
 };

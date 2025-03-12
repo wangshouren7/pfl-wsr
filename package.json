@@ -1,11 +1,11 @@
 {
-  "name": "npcs",
+  "name": "pfl-wsr",
   "private": true,
   "packageManager": "pnpm@9.4.0+sha512.f549b8a52c9d2b8536762f99c0722205efc5af913e77835dbccc3b0b0b2ca9e7dc8022b78062c17291c48e88749c70ce88eb5a74f1fa8c4bf5e18bb46c8bd83a",
   "scripts": {
     "prepare": "husky",
-    "dev": "npcs dev",
-    "storybook": "npcs storybook",
+    "dev": "pfl-wsr dev",
+    "storybook": "pfl-wsr storybook",
     "commit": "git-cz",
     "prepublish": "turbo compile"
   },
@@ -13,11 +13,13 @@
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
     "@manypkg/cli": "^0.21.4",
-    "@npcs/cli": "workspace:^",
-    "@npcs/get-changed-packages": "workspace:^",
+    "@pfl-wsr/cli": "workspace:^",
+    "@pfl-wsr/configs": "workspace:^",
+    "@pfl-wsr/get-changed-packages": "workspace:^",
     "commitizen": "^4.3.0",
     "cz-git": "^1.9.4",
     "husky": "^9.1.1",
+    "jiti": "^2.4.2",
     "lerna": "^8.1.7",
     "lerna-changelog": "^2.2.0",
     "lint-staged": "^15.2.7",
@@ -33,14 +35,14 @@
     ]
   },
   "resolutions": {
-    "@typescript-eslint/typescript-estree": "7.16.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "@types/node": "^20.14.10",
     "@types/react": "19.0.8",
     "@types/react-dom": "19.0.3",
     "viem": "2.7.6",
-    "typescript": "5.8.2"
+    "typescript": "5.8.2",
+    "@pnpm/logger": "5.2.0"
   },
   "config": {
     "commitizen": {

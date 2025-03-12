@@ -3,7 +3,7 @@ import { ENoteEditMode } from "@libs/components/edit/types";
 import { INoteValidationInfer } from "@libs/components/edit/validation";
 import { prisma } from "@libs/prisma/client";
 import { migratePage } from "@libs/utils/migrations";
-import { IPageProps } from "@npcs/ui";
+import { IPageProps } from "@pfl-wsr/ui";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -37,7 +37,7 @@ const ViewPage: React.FC<IPageProps<{ id: string }>> = migratePage(
         note={note}
       />
     );
-  },
+  }
 );
 
 export default ViewPage;

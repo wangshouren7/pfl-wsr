@@ -1,7 +1,7 @@
 import { ButtonIcon } from "@libs/components/button/icon";
 import { IconInfo } from "@libs/components/icon/info";
 import { REPO } from "@libs/constants/repo";
-import { IComponentBaseProps, mp } from "@npcs/ui";
+import { IComponentBaseProps, mp } from "@pfl-wsr/ui";
 import Link from "next/link";
 import React from "react";
 
@@ -14,6 +14,6 @@ export const InfoButton: React.FC<IInfoProps> = (props) => {
       <ButtonIcon>
         <IconInfo />
       </ButtonIcon>
-    </Link>,
+    </Link>
   );
 };

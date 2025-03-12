@@ -2,7 +2,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { createUserIfNeeded } from "@libs/actions/user";
 import { SyncElementClass } from "@libs/theme";
-import { cn } from "@npcs/ui";
+import { cn } from "@pfl-wsr/ui";
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
@@ -30,7 +30,7 @@ export default async function RootLayout({
         <body
           className={cn(
             nunito.className,
-            "h-screen bg-primary text-primary px-6 py-12 overflow-y-auto flex flex-col justify-center items-center",
+            "h-screen bg-primary text-primary px-6 py-12 overflow-y-auto flex flex-col justify-center items-center"
           )}
         >
           {children}

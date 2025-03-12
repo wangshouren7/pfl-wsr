@@ -1,10 +1,10 @@
 {
-  "name": "@npcs/get-changed-packages",
+  "name": "@pfl-wsr/get-changed-packages",
   "version": "0.6.3",
   "description": "Get the changed packages from the last commit inside a workspace.",
   "type": "module",
   "scripts": {
-    "clean": "npcs clean",
+    "clean": "pfl-wsr clean",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "compile:watch": "rollup -c --watch",
@@ -19,13 +19,8 @@
     "@pnpm/workspace.find-packages": "^4.0.1"
   },
   "devDependencies": {
-    "@npcs/eslint-config": "workspace:*",
-    "@npcs/rollup-config": "workspace:*",
-    "@npcs/tailwind-config": "workspace:*",
-    "@npcs/typescript-config": "workspace:*",
-    "@npcs/vitest-config": "workspace:^",
     "@types/node": "*",
-    "eslint": "^8.57.0",
+    "eslint": "^9.21.0",
     "rimraf": "^6.0.1",
     "rollup": "^4.18.1",
     "typescript": "5.8.2",
@@ -36,6 +31,6 @@
     "!*.map"
   ],
   "repository": {
-    "url": "https://github.com/xiaosen7/npcs"
+    "url": "https://github.com/xiaosen7/pfl-wsr"
   }
 }

@@ -1,4 +1,4 @@
-import { cn, IComponentBaseProps, mp } from "@npcs/ui";
+import { cn, IComponentBaseProps, mp } from "@pfl-wsr/ui";
 import React from "react";
 
 export interface IHeaderLayoutProps extends IComponentBaseProps {
@@ -25,6 +25,6 @@ export const HeaderLayout: React.FC<IHeaderLayoutProps> = ({
       <div key="right" className={cn("flex gap-5", rightClassName)}>
         {right}
       </div>
-    </header>,
+    </header>
   );
 };

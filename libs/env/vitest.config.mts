@@ -1,3 +1,3 @@
-import config from "@npcs/vitest-config";
+import config from "@pfl-wsr/configs/vitest";
 
 export default config;

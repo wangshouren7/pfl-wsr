@@ -3,7 +3,7 @@
 import { log } from "@/log";
 import { prisma } from "@/prisma/client";
 import { auth, currentUser } from "@clerk/nextjs/server";
-import { env } from "@npcs/env/shared";
+import { env } from "@pfl-wsr/env/shared";
 
 async function getClerkUser() {
   try {

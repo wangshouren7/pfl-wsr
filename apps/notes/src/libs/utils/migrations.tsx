@@ -1,4 +1,4 @@
-import { IPageProps } from "@npcs/ui";
+import { IPageProps } from "@pfl-wsr/ui";
 
 /**
  * @reference https://nextjs.org/docs/app/building-your-application/upgrading/version-15#params--searchparams
@@ -20,7 +20,7 @@ async function migratePageProps<T extends IPageProps>(props: T) {
  * @reference https://nextjs.org/docs/app/building-your-application/upgrading/version-15#params--searchparams
  */
 export function migratePage<T extends IPageProps>(
-  Component: React.ComponentType<T>,
+  Component: React.ComponentType<T>
 ) {
   async function fn(props: T) {
     const transformedProps = await migratePageProps(props);

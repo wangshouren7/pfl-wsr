@@ -101,7 +101,9 @@ export class CommandGenerateComponents extends Command<
     await fsx.writeFile(outputPath, content);
     try {
       execSh(`pnpm prettier ${outputPath} --write`);
-    } catch (error) {}
+    } catch (error) {
+      this.log.error("Failed to format generated code:", error);
+    }
     this.log.info("Generated:", outputPath);
   }
 }

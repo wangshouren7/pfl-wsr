@@ -2,7 +2,7 @@
 
 import { log } from "@/log";
 import { prisma } from "@/prisma/client";
-import { IUploadClientJSON } from "@npcs/upload";
+import { IUploadClientJSON } from "@pfl-wsr/upload";
 import { getCurrentUser, getCurrentUserOrThrow } from "./user";
 
 export async function addFile(info: IUploadClientJSON) {

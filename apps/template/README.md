@@ -1,1 +1,1 @@
-# @npcs/template
+# @pfl-wsr/template

@@ -1,6 +1,6 @@
-const scopes = import("@npcs/get-changed-packages/esm/pnpm.js")
+const scopes = import("@pfl-wsr/get-changed-packages/esm/pnpm.js")
   .then((x) => x.getChangedPackages())
-  .then((res) => res.map((x) => x.split("/")[1] ?? "npcs"));
+  .then((res) => res.map((x) => x.split("/")[1] ?? "pfl-wsr"));
 
 /** @type {import('cz-git').UserConfig} */
 module.exports = {

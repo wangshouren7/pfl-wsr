@@ -1,7 +1,7 @@
 packages:
   - "./apps/*"
+  - "./apps/dapp-token-exchange/*"
   - "./configs/*"
   - "./libs/*"
   - "./dbs/*"
   - "./tools/*"
-  - "./contracts/*"

@@ -1,5 +1,5 @@
-@import url("@npcs/ui/styles.css");
-@import url("@npcs/theme/styles.css");
+@import url("@pfl-wsr/ui/styles.css");
+@import url("@pfl-wsr/theme/styles.css");
 @import url("@libs/theme/variables.css");
 
 @tailwind base;

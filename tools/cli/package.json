@@ -1,5 +1,5 @@
 {
-  "name": "@npcs/cli",
+  "name": "@pfl-wsr/cli",
   "version": "0.6.2",
   "scripts": {
     "typecheck": "tsc --noEmit",
@@ -12,11 +12,10 @@
   },
   "type": "module",
   "bin": {
-    "npcs": "./bin/cli.mjs"
+    "pfl-wsr": "./bin/cli.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
-    "@npcs/storybook-config": "workspace:^",
     "@pnpm/filter-workspace-packages": "^10.0.1",
     "@pnpm/find-workspace-dir": "^7.0.1",
     "@pnpm/workspace.find-packages": "^4.0.1",
@@ -62,7 +61,7 @@
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
     "spark-md5": "^3.0.2",
-    "tailwind-merge": "^2.4.0",
+    "tailwind-merge": "^3.0.2",
     "ts-dedent": "^2.2.0",
     "type-fest": "^4.21.0",
     "uuid": "^10.0.0",
@@ -70,19 +69,14 @@
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.6.1",
-    "@npcs/eslint-config": "workspace:*",
-    "@npcs/rollup-config": "workspace:*",
-    "@npcs/tailwind-config": "workspace:*",
-    "@npcs/typescript-config": "workspace:*",
-    "@npcs/vitest-config": "workspace:^",
-    "@storybook/addon-essentials": "8.2.4",
-    "@storybook/addon-interactions": "8.2.4",
-    "@storybook/addon-links": "8.2.4",
-    "@storybook/addon-onboarding": "8.2.4",
-    "@storybook/blocks": "8.2.4",
-    "@storybook/nextjs": "8.2.4",
-    "@storybook/react": "8.2.4",
-    "@storybook/test": "8.2.4",
+    "@storybook/addon-essentials": "^8.6.3",
+    "@storybook/addon-interactions": "^8.6.3",
+    "@storybook/addon-links": "^8.6.3",
+    "@storybook/addon-onboarding": "^8.6.3",
+    "@storybook/blocks": "^8.6.3",
+    "@storybook/nextjs": "^8.6.3",
+    "@storybook/react": "^8.6.3",
+    "@storybook/test": "^8.6.3",
     "@types/async": "^3.2.24",
     "@types/fs-extra": "^11.0.4",
     "@types/lodash-es": "^4.17.12",
@@ -94,11 +88,11 @@
     "@types/spark-md5": "^3.0.4",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react": "^4.3.1",
-    "eslint": "^8.57.0",
-    "eslint-plugin-storybook": "^0.8.0",
+    "eslint": "^9.21.0",
+    "eslint-plugin-storybook": "^0.11.4",
     "rollup": "^4.18.1",
-    "storybook": "8.2.4",
-    "tailwindcss": "^3.4.5",
+    "storybook": "^8.6.3",
+    "tailwindcss": "^4.0.9",
     "tslib": "^2.6.3",
     "tsup": "^8.1.0",
     "typescript": "5.8.2",
@@ -110,6 +104,6 @@
     "!*.map"
   ],
   "repository": {
-    "url": "https://github.com/xiaosen7/npcs"
+    "url": "https://github.com/xiaosen7/pfl-wsr"
   }
 }

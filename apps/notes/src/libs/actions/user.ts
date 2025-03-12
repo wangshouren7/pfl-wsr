@@ -2,7 +2,7 @@
 
 import { currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@libs/prisma/client";
-import { createLog } from "@npcs/log";
+import { createLog } from "@pfl-wsr/log";
 
 const log = createLog("user actions");
 

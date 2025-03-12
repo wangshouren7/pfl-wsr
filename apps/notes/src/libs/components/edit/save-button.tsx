@@ -1,6 +1,6 @@
 import { ButtonIcon, IIconButtonProps } from "@libs/components/button/icon";
 import { IconSave } from "@libs/components/icon/save";
-import { Dialog, DialogContent, DialogTrigger } from "@npcs/ui";
+import { Dialog, DialogContent, DialogTrigger } from "@pfl-wsr/ui";
 import { Button } from "../button/button";
 import { IconWarn } from "../icon/warn";
 

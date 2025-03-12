@@ -13,10 +13,7 @@ import { Command } from "../esm/index.js";
 
   const log = consola.withTag("@npcs/cli");
 
-  /**
-   *
-   * @param {Error} error
-   */
+  /** @param {Error} error */
   function errorHandler(error) {
     log.error(error.message);
     if (error.stack) {
@@ -35,7 +32,7 @@ import { Command } from "../esm/index.js";
       Object.getPrototypeOf(CommandCtrl.prototype) === Command.prototype &&
       CommandCtrl !== Command
     ) {
-      // @ts-ignore
+      // @ts-expect-error it has excluded abstract class
       program.addCommand(new CommandCtrl().cmd);
     }
   });

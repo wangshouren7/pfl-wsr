@@ -14,7 +14,7 @@ import {
   FormItem,
   useForm,
   useRouter,
-} from "@npcs/ui";
+} from "@pfl-wsr/ui";
 import { useControllableValue, useRequest } from "ahooks";
 import React from "react";
 import { HeaderLayout } from "../layout/header";
@@ -56,7 +56,7 @@ export const NoteEdit: React.FC<INoteEditProps> = (props) => {
     },
     {
       manual: true,
-    },
+    }
   );
 
   const isEdit = !!note;

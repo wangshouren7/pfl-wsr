@@ -1,5 +1,5 @@
 {
-  "extends": "@npcs/typescript-config",
+  "extends": "@pfl-wsr/configs/tsconfig",
   "compilerOptions": {
     "types": ["vitest/globals"],
     "paths": {

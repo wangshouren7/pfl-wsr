@@ -1,5 +1,5 @@
 import { EUploadClientState } from "@client/types";
-import { Badge, cn, IComponentBaseProps, mp, Progress } from "@npcs/ui";
+import { Badge, cn, IComponentBaseProps, mp, Progress } from "@pfl-wsr/ui";
 import {
   CheckIcon,
   Cross2Icon,
@@ -31,7 +31,7 @@ interface IUploadSingleFileProps extends IComponentBaseProps {
 }
 
 export const File = memo(function UploadSingleFile(
-  props: IUploadSingleFileProps,
+  props: IUploadSingleFileProps
 ) {
   const {
     name,
@@ -107,7 +107,7 @@ export const File = memo(function UploadSingleFile(
           </Observer>
         )}
       </div>
-    </div>,
+    </div>
   );
 });
 

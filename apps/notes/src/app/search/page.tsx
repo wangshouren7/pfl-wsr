@@ -5,7 +5,7 @@ import { HeaderLayout } from "@libs/components/layout/header";
 import { prisma } from "@libs/prisma/client";
 import { Back } from "@libs/router/back";
 import { migratePage } from "@libs/utils/migrations";
-import { IPageProps } from "@npcs/ui";
+import { IPageProps } from "@pfl-wsr/ui";
 import React from "react";
 
 export const dynamic = "force-dynamic";
@@ -47,7 +47,7 @@ const SearchPage: React.FC<IPageProps<{}, { q: string }>> = migratePage(
         )}
       </div>
     );
-  },
+  }
 );
 
 export default SearchPage;

@@ -3,7 +3,7 @@ import { themes } from "@storybook/theming";
 
 addons.setConfig({
   theme: {
-    brandTitle: "Storybook for @npcs/notes",
+    brandTitle: "Storybook for @pfl-wsr/notes",
     ...themes.dark,
   },
 });

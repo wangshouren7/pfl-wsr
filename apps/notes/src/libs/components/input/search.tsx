@@ -1,7 +1,7 @@
 "use client";
 
 import { IconClose } from "@libs/components/icon/close";
-import { IComponentBaseProps, mp, useRouter } from "@npcs/ui";
+import { IComponentBaseProps, mp, useRouter } from "@pfl-wsr/ui";
 import { useControllableValue, useDebounceEffect } from "ahooks";
 import { omit } from "lodash-es";
 import React, { ComponentProps, useTransition } from "react";
@@ -46,6 +46,6 @@ export const InputSearch: React.FC<ISearchInputProps> = (props) => {
         hidden={!value}
         onClick={() => onChange("")}
       />
-    </div>,
+    </div>
   );
 };

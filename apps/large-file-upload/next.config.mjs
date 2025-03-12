@@ -1,9 +1,3 @@
-// @ts-check
-import { sharedNextConfig } from "@npcs/next-config";
-
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  ...sharedNextConfig,
-};
+import config from "@pfl-wsr/configs/next";
 
 export default nextConfig;

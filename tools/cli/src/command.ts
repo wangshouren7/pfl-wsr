@@ -1,12 +1,12 @@
 import { Command as _Command } from "commander";
-import { consola, ConsolaInstance } from "consola";
-import { z } from "zod";
+import { consola, type ConsolaInstance } from "consola";
+import { type z } from "zod";
 
 // TODO fix any
-export type IOptionsValidation = z.ZodObject<any>;
+export type IOptionsValidation = z.ZodObject<z.ZodRawShape>;
 
 export abstract class Command<
-  TOptionsValidation extends IOptionsValidation = z.ZodObject<any>,
+  TOptionsValidation extends IOptionsValidation = z.ZodObject<z.ZodRawShape>,
   TOptions = z.infer<TOptionsValidation>,
 > {
   readonly cmd;
@@ -24,16 +24,12 @@ export abstract class Command<
 
     // options
     Object.entries(this.optionsValidation.shape).forEach(([key, option]) => {
-      // TODO fix ts ignore
-      // @ts-ignore
       const defaultValue = option._def?.defaultValue();
       cmd.option(
         `--${key} <${key}>`,
         defaultValue !== undefined
-          ? // @ts-ignore
-            `${option.description} (defaults to ${JSON.stringify(defaultValue)})`
-          : // @ts-ignore
-            option.description,
+          ? `${option.description} (defaults to ${JSON.stringify(defaultValue)})`
+          : option.description,
         defaultValue,
       );
     });
@@ -64,6 +60,7 @@ export abstract class Command<
 
   /**
    * Throw an error
+   *
    * @param args
    */
   throwError(message: string): never {

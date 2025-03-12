@@ -1,10 +1,13 @@
 import { findWorkspaceDir } from "@pnpm/find-workspace-dir";
-import { findWorkspacePackages, Project } from "@pnpm/workspace.find-packages";
+import {
+  findWorkspacePackages,
+  type Project,
+} from "@pnpm/workspace.find-packages";
 import execSh from "exec-sh";
 import inquirer from "inquirer";
 import { z } from "zod";
-import { Command, IOptionsValidation } from "./command";
-import * as dc from "docker-compose";
+import { Command, type IOptionsValidation } from "./command";
+import * as docker from "docker-compose";
 
 const name = "dev";
 const description = "Start develop app";
@@ -27,9 +30,8 @@ export class CommandDev extends Command<typeof options> {
         patterns: ["./apps/*"],
       })
     ).filter((x) => x.rootDir !== workspace);
-    dc.ps;
-    await dc.version({ cwd: workspace, log: true });
-    await dc.upAll({
+    await docker.version({ cwd: workspace, log: true });
+    await docker.upAll({
       cwd: workspace,
       log: true,
       config: "db.docker-compose.yml",
@@ -48,7 +50,7 @@ export class CommandDev extends Command<typeof options> {
           name: "packageName",
           message: "Select app",
           choices: apps.map((x) => x.manifest.name!),
-        } as any,
+        },
       ])
       .then(({ packageName }) => {
         execSh(`turbo dev --filter=${packageName}`, {

@@ -1,4 +1,4 @@
-import { Command, IOptionsValidation } from "@/command";
+import { Command, type IOptionsValidation } from "@/command";
 import { Command as Commander } from "commander";
 import { describe, expect, vi } from "vitest";
 import { z } from "zod";
@@ -107,7 +107,7 @@ describe(Command.name, () => {
       const { commander: commander, optionName, command } = createTestCommand();
 
       expect(() =>
-        commander.parseAsync([`--${optionName}`, 1 as any], {
+        commander.parseAsync([`--${optionName}`, "1"], {
           from: "user",
         }),
       ).rejects.toThrowErrorMatchingInlineSnapshot(
@@ -119,12 +119,12 @@ describe(Command.name, () => {
 
   describe(nameOf<Command>("throwError"), () => {
     test("should throw an error", () => {
-      const { command, name } = createCommand();
+      const { command } = createCommand();
       expect(() => command.throwError("")).toThrowError();
     });
 
     test("should match error text", () => {
-      const { command, name } = createCommand();
+      const { command } = createCommand();
       expect(() =>
         command.throwError("some error happens"),
       ).toThrowErrorMatchingInlineSnapshot(`[Error: some error happens]`);

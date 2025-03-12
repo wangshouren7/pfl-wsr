@@ -1,6 +1,6 @@
 "use client";
 
-import { cn, mp } from "@npcs/ui";
+import { cn, mp } from "@pfl-wsr/ui";
 import { useControllableValue } from "ahooks";
 import React, { ComponentProps } from "react";
 
@@ -14,11 +14,11 @@ export const InputTitle: React.FC<IInputContentProps> = (props) => {
       <div
         {...props}
         className={cn(
-          "bg-transparent w-full border-none text-4xl text-gray-300 placeholder:text-gray-300 focus:outline-none",
+          "bg-transparent w-full border-none text-4xl text-gray-300 placeholder:text-gray-300 focus:outline-none"
         )}
       >
         {value}
-      </div>,
+      </div>
     );
   }
 
@@ -28,10 +28,10 @@ export const InputTitle: React.FC<IInputContentProps> = (props) => {
       placeholder="Title"
       {...props}
       className={cn(
-        "bg-transparent w-full border-none text-4xl text-gray-300 placeholder:text-gray-300 focus:outline-none",
+        "bg-transparent w-full border-none text-4xl text-gray-300 placeholder:text-gray-300 focus:outline-none"
       )}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-    />,
+    />
   );
 };

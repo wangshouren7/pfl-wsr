@@ -1,0 +1,33 @@
+{
+  "extends": "@pfl-wsr/configs/tsconfig",
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+      // "@pfl-wsr/ui/*": ["../../libs/ui/src/*"]
+    },
+    "types": [
+      "vitest/globals"
+    ],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "jsx": "preserve"
+  },
+  "include": [
+    "./**/*",
+    "./.storybook/**/*",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "./node_modules"
+  ]
+}

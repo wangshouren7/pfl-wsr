@@ -1,11 +1,5 @@
+import { cn } from "@pfl-wsr/shadcn-ui";
 import React from "react";
-
-import { ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
 
 /**
  * merge props with jsx

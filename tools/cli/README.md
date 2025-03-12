@@ -1,1 +1,1 @@
-# @npcs/cli
+# @pfl-wsr/cli

@@ -1,0 +1,39 @@
+{
+  "name": "@pfl-wsr/dapp-token-exchange-contracts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "deploy:localhost": "npx hardhat ignition deploy ./ignition/modules/Token.ts --network localhost && npx hardhat ignition deploy ./ignition/modules/Exchange.ts --network localhost",
+    "test:localhost": "npx hardhat test --network localhost",
+    "generate-contract-config": "npx hardhat run ./scripts/generate-contract-config.ts --network localhost",
+    "seed:localhost": "npx hardhat run ./scripts/seed.ts --network localhost",
+    "compile": "npx hardhat compile"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
+    "@nomicfoundation/hardhat-ethers": "^3.0.0",
+    "@nomicfoundation/hardhat-ignition": "^0.15.0",
+    "@nomicfoundation/hardhat-ignition-ethers": "^0.15.0",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.0",
+    "@nomiclabs/hardhat-ganache": "^2.0.1",
+    "@pfl-wsr/log": "workspace:^",
+    "@typechain/hardhat": "^9.0.0",
+    "@types/chai": "^4.2.0",
+    "@types/mocha": ">=9.1.0",
+    "@types/node": "*",
+    "chai": "^4.2.0",
+    "ethers": "^6.4.0",
+    "hardhat": "^2.22.19",
+    "hardhat-gas-reporter": "^1.0.8",
+    "solidity-coverage": "^0.8.0",
+    "ts-node": ">=8.0.0",
+    "typechain": "^8.3.0",
+    "typescript": "5.8.2"
+  }
+}

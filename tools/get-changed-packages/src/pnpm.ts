@@ -1,7 +1,7 @@
 import { findWorkspacePackages } from "@pnpm/workspace.find-packages";
 import { filterChangedPkgs, getUnCommitFiles } from "./shared";
 
-export const getChangedPackages = async () => {
+const getChangedPackages = async () => {
   const pkgs = await getPnpmWorkspacePkgs(process.cwd());
   const unCommitFiles = getUnCommitFiles();
 
@@ -16,5 +16,7 @@ async function getPnpmWorkspacePkgs(cwd: string) {
       name: name!,
     }));
 }
+
+export { getChangedPackages };
 
 export default getChangedPackages;

@@ -2,7 +2,7 @@
 
 import { ButtonIcon } from "@libs/components/button/icon";
 import { IconBack } from "@libs/components/icon/back";
-import { IComponentBaseProps, mp } from "@npcs/ui";
+import { IComponentBaseProps, mp } from "@pfl-wsr/ui";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -15,7 +15,7 @@ export const Back: React.FC<IBackProps> = (props) => {
       props,
       <ButtonIcon onClick={() => router.back()}>
         <IconBack />
-      </ButtonIcon>,
+      </ButtonIcon>
     );
   } catch (error) {
     // for without next router provider
@@ -23,7 +23,7 @@ export const Back: React.FC<IBackProps> = (props) => {
       props,
       <ButtonIcon>
         <IconBack />
-      </ButtonIcon>,
+      </ButtonIcon>
     );
   }
 };

@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 
-import config from "@npcs/rollup-config";
+import config from "@pfl-wsr/configs/rollup";
 
 /** @type {import('rollup').RollupOptions} */
 export default {

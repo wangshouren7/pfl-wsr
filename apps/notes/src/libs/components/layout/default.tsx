@@ -1,4 +1,4 @@
-import { IComponentBaseProps, mp } from "@npcs/ui";
+import { IComponentBaseProps, mp } from "@pfl-wsr/ui";
 import React from "react";
 
 export interface IDefaultLayoutProps extends IComponentBaseProps {

@@ -7,12 +7,12 @@ import {
   FileSystemStorage,
   startWebsocketServer,
   Upload,
-} from "@npcs/upload";
+} from "@pfl-wsr/upload";
 import path from "path";
 
 configuration.set({
   storage: new FileSystemStorage(
-    path.resolve("node_modules", ".cache", "upload"),
+    path.resolve("node_modules", ".cache", "upload")
   ),
   webSocketPort: 9999,
 });

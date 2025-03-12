@@ -18,13 +18,13 @@ Place this directory to the server.
 You can clone this project:
 
 ```bash
-git clone https://github.com/xiaosen7/npcs/tree/main? -b main --depth 1
+git clone https://github.com/xiaosen7/pfl-wsr/tree/main? -b main --depth 1
 ```
 
 And `cd` to this directory
 
 ```bash
-cd ./npcs/deploy/production
+cd ./pfl-wsr/deploy/production
 ```
 
 ### Generate SSL
@@ -70,10 +70,10 @@ You will see the info like this:
 ```bash
 CONTAINER ID   IMAGE                                             COMMAND                   CREATED          STATUS                    PORTS                                            NAMES
 d6517d01c1c7   nginx:latest                                      "/docker-entrypoint.…"   14 minutes ago   Up 14 minutes             0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp         nginx
-33c54bd9356b   ghcr.io/xiaosen7/npcs-notes:latest               "docker-entrypoint.s…"   14 minutes ago   Up 14 minutes             0.0.0.0:3001->3000/tcp                           notes
-139a80149fd5   ghcr.io/xiaosen7/npcs-template:latest            "docker-entrypoint.s…"   14 minutes ago   Up 14 minutes             0.0.0.0:3000->3000/tcp                           template
-976f22d70635   ghcr.io/xiaosen7/npcs-large-file-upload:latest   "docker-entrypoint.s…"   14 minutes ago   Up 14 minutes             0.0.0.0:9999->9999/tcp, 0.0.0.0:3003->3000/tcp   large-file-upload
-91d21bae9ef5   ghcr.io/xiaosen7/npcs-stackoverflow:latest       "docker-entrypoint.s…"   14 minutes ago   Up 14 minutes             0.0.0.0:3002->3000/tcp                           stackoverflow
+33c54bd9356b   ghcr.io/xiaosen7/pfl-wsr-notes:latest               "docker-entrypoint.s…"   14 minutes ago   Up 14 minutes             0.0.0.0:3001->3000/tcp                           notes
+139a80149fd5   ghcr.io/xiaosen7/pfl-wsr-template:latest            "docker-entrypoint.s…"   14 minutes ago   Up 14 minutes             0.0.0.0:3000->3000/tcp                           template
+976f22d70635   ghcr.io/xiaosen7/pfl-wsr-large-file-upload:latest   "docker-entrypoint.s…"   14 minutes ago   Up 14 minutes             0.0.0.0:9999->9999/tcp, 0.0.0.0:3003->3000/tcp   large-file-upload
+91d21bae9ef5   ghcr.io/xiaosen7/pfl-wsr-stackoverflow:latest       "docker-entrypoint.s…"   14 minutes ago   Up 14 minutes             0.0.0.0:3002->3000/tcp                           stackoverflow
 bff8f3954623   postgres:16                                       "docker-entrypoint.s…"   14 minutes ago   Up 14 minutes (healthy)   0.0.0.0:5432->5432/tcp                           postgres
 f2529dd24685   certbot/certbot                                   "/bin/sh -c 'trap ex…"   14 minutes ago   Up 14 minutes             80/tcp, 443/tcp                                  certbot
 ```

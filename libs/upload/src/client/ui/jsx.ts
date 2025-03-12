@@ -1,4 +1,4 @@
-import { cn } from "@npcs/ui";
+import { cn } from "@pfl-wsr/ui";
 import React from "react";
 
 /**

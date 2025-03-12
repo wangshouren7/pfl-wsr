@@ -1,4 +1,4 @@
-import sharedConfig from "@npcs/tailwind-config";
+import sharedConfig from "@pfl-wsr/configs/tailwindcss";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -12,7 +12,7 @@ const config: Config = {
       "3xl": "44px",
       "4xl": "48px",
     },
-    borderRadius: ({ theme }) => ({
+    borderRadius: () => ({
       DEFAULT: "5px",
       md: "10px",
       lg: "15px",

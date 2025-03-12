@@ -1,4 +1,4 @@
-import { IComponentBaseProps, mp } from "@npcs/ui";
+import { IComponentBaseProps, mp } from "@pfl-wsr/ui";
 import Image from "next/image";
 import React from "react";
 
@@ -113,6 +113,6 @@ export const Welcome: React.FC<IHelloComponentProps> = (props) => {
           </p>
         </a>
       </div>
-    </main>,
+    </main>
   );
 };

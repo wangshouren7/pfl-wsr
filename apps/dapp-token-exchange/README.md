@@ -1,13 +1,23 @@
-# Dapp Token Exchange
+## Local development
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+1. Deploy the contracts
 
-Try running some of the following tasks:
+`cd ./contracts`
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
+```bash
 npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
+```
+
+```bash
+npx hardhat ignition deploy ./ignition/modules/Token.ts --network localhost
+npx hardhat ignition deploy ./ignition/modules/Exchange.ts --network localhost
+npx hardhat run ./scripts/seed.ts --network localhost
+npx hardhat run ./scripts/generate-contract-config.ts --network localhost
+```
+
+2. Start the frontend
+
+```bash
+cd ./frontend
+npm run dev
 ```

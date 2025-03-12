@@ -1,8 +1,7 @@
-import sharedConfig from "@npcs/tailwind-config";
+import sharedConfig from "@pfl-wsr/configs/tailwindcss";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  darkMode: ["class"],
   content: ["./src/**/*.{tsx,css}"],
   presets: [sharedConfig],
   theme: {

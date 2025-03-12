@@ -1,1 +1,1 @@
-export { default } from "@npcs/rollup-config";
+export { default } from "@pfl-wsr/configs/rollup";

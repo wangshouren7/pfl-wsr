@@ -8,7 +8,7 @@ import {
   cn,
   IComponentBaseProps,
   mp,
-} from "@npcs/ui";
+} from "@pfl-wsr/ui";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -43,7 +43,7 @@ export const NoteCard: React.FC<INoteCardProps> = (props) => {
         <CarouselItem key={"trash"}>
           <div
             className={cn(
-              "rounded-md size-full bg-red-300 flex cursor-pointer",
+              "rounded-md size-full bg-red-300 flex cursor-pointer"
             )}
             onClick={() => actions?.remove(note, pathname)}
           >
@@ -51,7 +51,7 @@ export const NoteCard: React.FC<INoteCardProps> = (props) => {
           </div>
         </CarouselItem>
       </CarouselContent>
-    </Carousel>,
+    </Carousel>
   );
 };
 

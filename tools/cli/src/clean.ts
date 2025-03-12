@@ -1,9 +1,8 @@
 import { rimraf } from "rimraf";
 import { z } from "zod";
-import { Command, IOptionsValidation } from "./command";
+import { Command, type IOptionsValidation } from "./command";
 
 const targets = [
-  "node_modules",
   "esm",
   ".turbo",
   ".rollup.cache",

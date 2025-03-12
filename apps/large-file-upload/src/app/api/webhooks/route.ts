@@ -1,7 +1,7 @@
 import { log } from "@/log";
 import { prisma } from "@/prisma/client";
 import { WebhookEvent } from "@clerk/nextjs/server";
-import { env } from "@npcs/env/server";
+import { env } from "@pfl-wsr/env/server";
 import { headers } from "next/headers";
 import { Webhook } from "svix";
 
@@ -11,7 +11,7 @@ export async function POST(req: Request) {
 
   if (!WEBHOOK_SECRET) {
     throw new Error(
-      "Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local",
+      "Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local"
     );
   }
 

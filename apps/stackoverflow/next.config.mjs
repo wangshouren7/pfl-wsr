@@ -1,8 +1,5 @@
-// @ts-check
+import sharedNextConfig from "@pfl-wsr/configs/next";
 
-import { sharedNextConfig } from "@npcs/next-config";
-
-/** @type {import('next').NextConfig} */
 const config = {
   ...sharedNextConfig,
   images: {

@@ -1,1 +1,1 @@
-export * from "@npcs/ui";
+export * from "@pfl-wsr/ui";

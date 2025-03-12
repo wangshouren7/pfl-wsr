@@ -1,6 +1,6 @@
 "use client";
 
-import { mp } from "@npcs/ui";
+import { mp } from "@pfl-wsr/ui";
 import { useEffect, useRef, useTransition } from "react";
 import { useStore } from "zustand";
 import { IOptions, ISyncElementClass, IToggleTheme, IUseTheme } from "./shared";
@@ -44,7 +44,7 @@ function createTheme<TValue extends string>(options: IOptions<TValue>) {
         }}
       >
         {ui[theme.getIndex()].icon}
-      </span>,
+      </span>
     );
   };
 

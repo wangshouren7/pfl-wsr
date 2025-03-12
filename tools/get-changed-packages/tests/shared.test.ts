@@ -1,4 +1,4 @@
-import { comparePath, filterChangedPkgs, IPkg } from "@/shared";
+import { comparePath, filterChangedPkgs, type IPkg } from "@/shared";
 import { name } from "../package.json";
 
 describe(name, () => {
@@ -10,7 +10,7 @@ describe(name, () => {
     const doTest = (
       pkgs: IPkg[],
       unCommitFiles: string[],
-      expectedResult: string[],
+      expectedResult: string[]
     ) => {
       expect(filterChangedPkgs(pkgs, unCommitFiles)).toEqual(expectedResult);
     };

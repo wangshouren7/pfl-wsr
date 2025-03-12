@@ -7,7 +7,7 @@ import { IUploadClientActions, IWrapServerActions } from "../../shared/actions";
 import { IUploadSetting, UploadSetting } from "./setting";
 
 import { EUploadClientState, IUploadClientJSON } from "@client/types";
-import { Input, InputProps, toast, Toaster } from "@npcs/ui";
+import { Input, InputProps, toast, Toaster } from "@pfl-wsr/ui";
 import { configuration } from "@shared/configuration";
 import { useIsClient } from "@shared/next";
 import { io } from "socket.io-client";
@@ -56,7 +56,7 @@ export const UploadClientSide: React.FC<IUploadClientSideProps> = ({
         concurrency: DEFAULTS.concurrency,
         protocol: DEFAULTS.protocol,
       },
-    },
+    }
   );
   const [clientMap, clientMapActions] = useMap<
     string,
@@ -79,11 +79,11 @@ export const UploadClientSide: React.FC<IUploadClientSideProps> = ({
       isClient
         ? new SocketClient<IWrapServerActions<IUploadClientActions>>(
             io(
-              `${location.protocol}//${location.hostname}:${configuration.webSocketPort}`,
-            ),
+              `${location.protocol}//${location.hostname}:${configuration.webSocketPort}`
+            )
           )
         : null,
-    [isClient],
+    [isClient]
   );
   const canUseWebsocket = !!socketClient;
   const protocol =
@@ -96,7 +96,7 @@ export const UploadClientSide: React.FC<IUploadClientSideProps> = ({
       protocol === ESupportedProtocol.Http
         ? httpActions
         : socketClient!.actions,
-    [protocol, socketClient, httpActions],
+    [protocol, socketClient, httpActions]
   );
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -105,12 +105,11 @@ export const UploadClientSide: React.FC<IUploadClientSideProps> = ({
   const onChange = useMemoizedFn((async (e) => {
     Array.from(e.target.files ?? []).forEach((file) => {
       if (isNumber(maxSize) && file.size > maxSize) {
-        toast({
-          title: `File ${file.name} is too large. Max size is ${formatFileSize(
-            maxSize,
-          )}`,
-          variant: "destructive",
-        });
+        toast(
+          `File ${file.name} is too large. Max size is ${formatFileSize(
+            maxSize
+          )}`
+        );
         return;
       }
 
@@ -119,7 +118,7 @@ export const UploadClientSide: React.FC<IUploadClientSideProps> = ({
         file,
         unwrapActions(actions),
         setting?.concurrency,
-        setting?.chunkSize,
+        setting?.chunkSize
       );
       client.finisher = async () => onComplete?.(client.toJSON());
       idToProtocolMap.set(id, protocol);
@@ -230,7 +229,7 @@ interface IUploadSingleFileProps {
   protocol?: string;
 }
 const UploadSingleFile = memo(function UploadSingleFile(
-  props: IUploadSingleFileProps,
+  props: IUploadSingleFileProps
 ) {
   const { client, onRemove, protocol } = props;
   const file = client.file;
@@ -265,6 +264,6 @@ const UploadSingleFile = memo(function UploadSingleFile(
       onRemove={onRemove}
       onRestart={onRestart}
       onStop={onStop}
-    />,
+    />
   );
 });

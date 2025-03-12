@@ -3,7 +3,7 @@ import { findWorkspacePackages } from "@pnpm/workspace.find-packages";
 import execSh from "exec-sh";
 import inquirer from "inquirer";
 import { z } from "zod";
-import { Command, IOptionsValidation } from "./command";
+import { Command, type IOptionsValidation } from "./command";
 
 const name = "storybook";
 const description = "Start storybook server of app";
@@ -32,7 +32,7 @@ export class CommandStorybook extends Command<typeof options> {
           name: "packageName",
           message: "Select app",
           choices: apps.map((x) => x.manifest.name!),
-        } as any,
+        },
       ])
       .then(({ packageName }) => {
         execSh(`turbo storybook --filter=${packageName}`, {

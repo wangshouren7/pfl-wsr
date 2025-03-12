@@ -1,5 +1,6 @@
-export * from "./components";
-export * from "./components/magicui";
+// import "@pfl-wsr/shadcn-ui/styles.css";
+
+export * from "@pfl-wsr/shadcn-ui";
 export * from "./hooks";
 export * from "./types";
 export * from "./utils";

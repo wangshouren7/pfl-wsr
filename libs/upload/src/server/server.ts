@@ -1,4 +1,4 @@
-import { createLog } from "@npcs/log";
+import { createLog } from "@pfl-wsr/log";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
 import { IUploadClientActions } from "../shared/actions";
@@ -28,7 +28,7 @@ export function startWebsocketServer() {
         origin: "*",
       },
     }),
-    uploadActions,
+    uploadActions
   );
 
   httpServer

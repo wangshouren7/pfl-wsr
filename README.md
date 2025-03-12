@@ -1,14 +1,14 @@
-# npcs
+# pfl-wsr
 
 Build and deploy Next.js practical cases.
 
 ## Apps
 
-| Name              | Description                       | Staging website                              | Production website                   |
-| ----------------- | --------------------------------- | -------------------------------------------- | ------------------------------------ |
-| Notes             | A Notes application               | https://notes.staging.npcs.store             | https://notes.npcs.store             |
-| Stackoverflow     | Stackoverflow clone               | https://stackoverflow.staging.npcs.store     | https://stackoverflow.npcs.store     |
-| large-file-upload | Large file upload, chunks enabled | https://large-file-upload.staging.npcs.store | https://large-file-upload.npcs.store |
+| Name              | Description                       | Staging website                                 | Production website                      |
+| ----------------- | --------------------------------- | ----------------------------------------------- | --------------------------------------- |
+| Notes             | A Notes application               | https://notes.staging.pfl-wsr.store             | https://notes.pfl-wsr.store             |
+| Stackoverflow     | Stackoverflow clone               | https://stackoverflow.staging.pfl-wsr.store     | https://stackoverflow.pfl-wsr.store     |
+| large-file-upload | Large file upload, chunks enabled | https://large-file-upload.staging.pfl-wsr.store | https://large-file-upload.pfl-wsr.store |
 
 ## Develop application
 
@@ -33,7 +33,7 @@ docker compose -f ./db.docker-compose.yml up
 pnpm turbo compile
 ```
 
-> This is required because `pnpm dev` needs to run dev command provided by tool `@npcs/cli`.
+> This is required because `pnpm dev` needs to run dev command provided by tool `@pfl-wsr/cli`.
 
 - Start dev server
 
@@ -73,7 +73,7 @@ pnpm turbo compile:watch
 | Git commit message lint                                    | 1        |            |
 | The flow of publish libraries                              | 1        |            |
 | Research turbo generators                                  |          |            |
-| Replace next config with `@npcs/next-config`               | 1        |            |
+| Replace next config with `@pfl-wsr/next-config`            | 1        |            |
 | Refactor all consoles                                      | 1        |            |
 | Console env                                                | 1        |            |
 | Extract shared next config to plugin                       |          |            |
@@ -108,4 +108,3 @@ This project is licensed under the MIT License.
 - [Next-js-Boilerplate](https://github.com/ixartz/Next-js-Boilerplate/tree/main)
 - [create-t3-app](https://github.com/t3-oss/create-t3-app/blob/main/.github/workflows/ci.yml)
 - [nextjs-monorepo-example](https://github.com/belgattitude/nextjs-monorepo-example)
-

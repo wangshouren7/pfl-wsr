@@ -1,4 +1,4 @@
-import { cn, Label, Slider, ToggleGroup, ToggleGroupItem } from "@npcs/ui";
+import { cn, Label, Slider, ToggleGroup, ToggleGroupItem } from "@pfl-wsr/ui";
 
 import { useControllableValue } from "ahooks";
 import { values } from "lodash-es";

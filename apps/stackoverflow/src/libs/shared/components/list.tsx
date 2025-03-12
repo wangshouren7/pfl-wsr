@@ -1,4 +1,4 @@
-import { IComponentBaseProps } from "@npcs/ui";
+import { IComponentBaseProps } from "@pfl-wsr/ui";
 import React from "react";
 import { ISafeAny } from "../types";
 import { cn, mp } from "../utils";
@@ -27,7 +27,7 @@ export interface IListProps<TItem> extends IComponentBaseProps {
 }
 
 export const List = <TItem extends { id: React.Key }>(
-  props: IListProps<TItem>,
+  props: IListProps<TItem>
 ) => {
   const {
     titleExtra,
@@ -61,7 +61,7 @@ export const List = <TItem extends { id: React.Key }>(
         {search &&
           mp(
             search,
-            <SearchInputSyncQuery {...search} className="flex-1 md:w-full" />,
+            <SearchInputSyncQuery {...search} className="flex-1 md:w-full" />
           )}
 
         {filterProps &&
@@ -71,7 +71,7 @@ export const List = <TItem extends { id: React.Key }>(
               {...(filterProps as ISafeAny)}
               className="hidden w-full md:block"
               variant={"tags"}
-            />,
+            />
           )}
 
         {filterProps &&
@@ -81,14 +81,14 @@ export const List = <TItem extends { id: React.Key }>(
               {...(filterProps as ISafeAny)}
               className="hidden max-md:block"
               variant={"default"}
-            />,
+            />
           )}
 
         <div className="w-full">
           <div
             className={cn(
               "flex gap-4 flex-wrap",
-              direction === "column" && "flex-col",
+              direction === "column" && "flex-col"
             )}
           >
             {items.length > 0
@@ -103,6 +103,6 @@ export const List = <TItem extends { id: React.Key }>(
       </div>
 
       <PagePagination className="mt-10" total={total} />
-    </div>,
+    </div>
   );
 };

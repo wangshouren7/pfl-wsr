@@ -1,5 +1,5 @@
 "use client";
-import { mp } from "@npcs/ui";
+import { mp } from "@pfl-wsr/ui";
 import { useControllableValue } from "ahooks";
 import React, { ComponentProps } from "react";
 
@@ -12,7 +12,7 @@ export const InputContent: React.FC<IInputContentProps> = (props) => {
       props,
       <div className="w-full resize-none border-none bg-transparent text-gray-300 placeholder:text-gray-300 focus:outline-none">
         {value}
-      </div>,
+      </div>
     );
   }
 
@@ -24,6 +24,6 @@ export const InputContent: React.FC<IInputContentProps> = (props) => {
       placeholder="Type something..."
       value={value}
       onChange={(e) => onChange(e.target.value)}
-    />,
+    />
   );
 };
