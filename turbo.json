@@ -1,96 +1,32 @@
 {
   "$schema": "https://turbo.build/schema.json",
-
+  "remoteCache": {
+    "enabled": true
+  },
   "tasks": {
+    "compile": {
+      "inputs": ["src/**", "contracts/**/*.sol"],
+      "outputs": ["artifacts/**", "typechain-types/**", "cache", "index.ts"]
+    },
     "lint": {
-      "inputs": [
-        "src/**/*",
-        ".storybook/**",
-        "libs/**/*",
-        "app/**/*",
-        "tests/**/*"
-      ]
+      "inputs": ["src/**", "scripts/**", "test/**", "tests/**"]
     },
-    "typecheck": {
-      "inputs": [
-        "src/**/*",
-        ".storybook/**",
-        "libs/**/*",
-        "app/**/*",
-        "tests/**/*"
-      ],
-      "dependsOn": ["prisma-generate", "compile"]
-    },
-    "test": {
-      "inputs": ["src/**/*", "libs/**/*", "app/**/*", "tests/**/*"],
-      "dependsOn": ["compile"]
+    "check-types": {
+      "inputs": ["src/**", "scripts/**", "test/**", "tests/**"],
+      "dependsOn": ["compile", "^compile"]
     },
     "build": {
-      "inputs": [
-        "src/**/*",
-        "libs/**/*",
-        "app/**/*",
-        "next.config.mjs",
-        "tailwind.config.ts",
-        "postcss.*",
-        "prisma/**/*"
-      ],
-      "outputs": [".next/**", "!.next/cache/**"],
-      "dependsOn": ["^compile", "prisma-generate"]
+      "inputs": ["src/**"],
+      "outputs": [".next/**"],
+      "dependsOn": ["^compile"]
+    },
+    "test": {
+      "inputs": ["src/**/*", "app/**/*", "tests/**/*", "test/**/*"]
     },
     "dev": {
       "persistent": true,
       "cache": false,
       "dependsOn": ["^compile"]
-    },
-    "storybook": {
-      "persistent": true,
-      "cache": false,
-      "dependsOn": ["^compile", "prisma-generate"]
-    },
-    "prisma-generate": {
-      "cache": false
-    },
-    "compile": {
-      "inputs": [
-        "src/**/*",
-        "postcss.config.*",
-        "rollup.config.*",
-        "tailwind.config.ts"
-      ],
-      "outputs": ["esm/**"],
-      "dependsOn": ["^compile"]
-    },
-    "test:e2e": {
-      "inputs": [
-        "app/**",
-        "libs/**",
-        "src/**",
-        "tests-e2e/**",
-        "tsconfig.json",
-        "package.json",
-        "tailwind.config.*"
-      ],
-      "outputs": ["playwright-report/**"]
-    },
-    "test:changed": {
-      "inputs": ["src/**/*", "libs/**/*", "app/**/*", "tests/**/*"],
-      "dependsOn": ["^compile"]
-    },
-
-    "compile:watch": {
-      "persistent": true,
-      "cache": false
-    },
-    "test:watch": {
-      "persistent": true,
-      "cache": false
-    },
-    "clean": {
-      "cache": false
     }
-  },
-  "remoteCache": {
-    "enabled": true
   }
 }

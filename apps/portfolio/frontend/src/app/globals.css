@@ -1,0 +1,70 @@
+@import "@pfl-wsr/ui/styles.css";
+@source "../../node_modules/@pfl-wsr/ui";
+
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+
+@layer components {
+  .bg-control {
+    @apply border border-solid border-accent/30 bg-background/20 shadow-glass-inset backdrop-blur-[6px] hover:shadow-glass-sm;
+  }
+}
+
+@theme {
+  /* ***************** Background and Foreground ****************** */
+  --color-background: rgba(27, 27, 27, 1);
+  --color-foreground: rgba(225, 225, 225, 1);
+
+  /* ***************** Colors ****************** */
+  --color-accent: rgba(254, 254, 91, 1);
+  --color-muted: rgba(115, 115, 115, 1);
+
+  /* ***************** Box Shadow ****************** */
+  --shadow-glass-inset: inset 0 17px 5px -9px rgba(254, 254, 91, 0.05);
+  --shadow-glass-sm: 5px 5px 20px 0px rgba(254, 254, 91, 0.3);
+
+  /* ***************** Animations ****************** */
+  /* spin */
+  --animate-spin-slow: spin 40s linear infinite;
+  --animate-spin-slow-reverse: spin-reverse 40s linear infinite;
+  @keyframes spin-reverse {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(-360deg);
+    }
+  }
+  /* orbit */
+  --animate-orbit: orbit 30s linear infinite;
+  @keyframes orbit {
+    0% {
+      transform: rotate(calc(var(--angle) * 1deg))
+        translateY(calc(var(--radius) * 1px)) rotate(calc(var(--angle) * -1deg));
+    }
+    100% {
+      transform: rotate(calc(var(--angle) * 1deg + 360deg))
+        translateY(calc(var(--radius) * 1px))
+        rotate(calc((var(--angle) * -1deg) - 360deg));
+    }
+  }
+
+  /* ***************** Breakpoints ****************** */
+  /* mobile is x < 768px */
+  --breakpoint-md: 768px;
+  /* tablet is 768px <= x < 1024px */
+  --breakpoint-lg: 1024px;
+  /* desktop is 1024px <= x */
+
+  /* Containers */
+  --container-9xl: 1600px;
+}
+
+@keyframes move {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(100px, 100px);
+  }
+}

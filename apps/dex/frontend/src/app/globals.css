@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@plugin 'tailwindcss-animate';
+
+@import "@pfl-wsr/ui/styles.css";
+@source "../../node_modules/@pfl-wsr/ui";
+
+@plugin "daisyui";

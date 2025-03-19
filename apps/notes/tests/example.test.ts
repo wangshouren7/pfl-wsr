@@ -1,3 +1,0 @@
-test("base", () => {
-  expect({}).toEqual({});
-});

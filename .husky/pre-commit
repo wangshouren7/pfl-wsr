@@ -1,3 +1,0 @@
-#!/bin/sh
-
-pnpm manypkg check && pnpm lint-staged

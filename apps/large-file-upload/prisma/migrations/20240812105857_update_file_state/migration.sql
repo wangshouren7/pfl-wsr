@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE "File" ALTER COLUMN "state" SET DEFAULT '',
-ALTER COLUMN "state" SET DATA TYPE TEXT;

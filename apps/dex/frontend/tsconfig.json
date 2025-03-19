@@ -1,0 +1,17 @@
+{
+  "extends": "@pfl-wsr/configs/tsconfig/next",
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "jsx": "preserve"
+  },
+  "include": ["src/**/*", ".next/types/**/*.ts"],
+  "exclude": ["**/node_modules/**", "../../../packages/**/*"]
+}

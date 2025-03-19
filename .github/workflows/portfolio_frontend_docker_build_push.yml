@@ -1,0 +1,82 @@
+name: Portfolio Frontend Docker Build and Push
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/portfolio/frontend/**"
+      - "docker/Frontend.*"
+      - ".github/workflows/portfolio_frontend_docker_build_push.yml"
+
+env:
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_CACHE: "remote:rw"
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    # 添加必要的权限
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # for multi-architecture support
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels, etc.)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/portfolio
+          tags: |
+            type=raw,value=latest
+            type=sha,format=short
+            type=ref,event=branch
+            type=ref,event=tag
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./docker/Frontend.Dockerfile
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            PACKAGE_NAME=@pfl-wsr/portfolio-frontend
+            PACKAGE_DIR=apps/portfolio/frontend
+            TURBO_TEAM=${{ vars.TURBO_TEAM }}
+            TURBO_TOKEN=${{ env.TURBO_TOKEN }}
+            TURBO_CACHE=${{ env.TURBO_CACHE }}
+
+      - name: Execute deployment via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd ${{ secrets.VPS_WORK_DIR }}
+            export $(grep -v '^#' .env | xargs)
+            docker compose pull portfolio
+            docker compose up -d portfolio
+            docker image prune -f

@@ -1,0 +1,4 @@
+{
+  "extends": "@pfl-wsr/configs/tsconfig/ui",
+  "include": ["src/**/*"]
+}

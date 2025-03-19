@@ -2,31 +2,32 @@ name: Quality
 
 on:
   push:
+    branches: [main]
     paths:
-      - "*.ts"
-      - "*.js"
-      - "*.mjs"
-      - "*.cjs"
-      - "*.cts"
-      - "*.mts"
-      - "*.json"
+      - "**/*.tsx"
+      - "**/*.ts"
+      - "**/*.js"
+      - "**/*.jsx"
+      - "**/*.css"
+      - "**/*.json"
+      - ".github/workflows/setup-node.yml"
+      - ".github/actions/quality.yml"
 
 env:
-  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_CACHE: "remote:rw"
 
 jobs:
   check:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: 📥 Install dependencies
-        uses: ./.github/actions/setup
+      - name: Setup
+        uses: ./.github/actions/setup-node
 
       - name: Run check tasks with Turbo
         run: |
-          # To fix the file or directory not find error emmittied by prisma
-          pnpm turbo prisma-generate --concurrency 1
-          pnpm turbo typecheck
-          pnpm turbo lint test
+          pnpm turbo lint check-types

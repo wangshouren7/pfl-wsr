@@ -3,6 +3,5 @@
     {
       "mode": "auto"
     }
-  ],
-  "vitest.disableWorkspaceWarning": true
+  ]
 }

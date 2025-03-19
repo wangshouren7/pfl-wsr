@@ -1,7 +1,3 @@
 packages:
-  - "./apps/*"
-  - "./configs/*"
-  - "./libs/*"
-  - "./dbs/*"
-  - "./tools/*"
-  - "./contracts/*"
+  - "./apps/*/*"
+  - "./packages/*"
