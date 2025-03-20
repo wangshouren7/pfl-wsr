@@ -74,6 +74,7 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
+          port: 22
           script: |
             cd ${{ secrets.VPS_WORK_DIR }}
             export $(grep -v '^#' .env | xargs)
